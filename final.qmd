@@ -1,0 +1,499 @@
+---
+title: "final"
+author: "Everett Mahaffy"
+format:
+  html:
+    toc: true
+    embed-resources: true
+    highlight-style: cyan
+execute:
+  eval: true
+  echo: false
+warning: false
+message: false
+---
+
+# Packages
+```{r}
+library(tidyverse)
+library(dplyr)
+library(lme4)
+library(lmerTest)
+library(performance)
+```
+
+# Read in data
+```{r}
+df <- read.csv("dyad_mean_data_all.csv")
+```
+
+# Linear models
+
+## RQ1. Are dyad members’ mean levels of inter-personal ER strategy use positively associated across the daily diary period?
+
+### models
+```{r}
+## PROBLEM SOLVING
+rq1a_problem_solving <- lm(
+  ad_inter_problem_solving_avg ~ par_inter_problem_solving_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq1a_problem_solving)
+check_model(rq1a_problem_solving, check = c("linearity","outliers","vif","qq"))
+
+## CORUMINATION
+rq1a_corumination <- lm(
+  ad_inter_corumination_avg ~ par_inter_corumination_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq1a_corumination)
+check_model(rq1a_corumination, check = c("linearity","outliers","vif","qq"))
+
+## REAPPRAISAL
+rq1a_reappraisal <- lm(
+  ad_inter_reappraisal_avg ~ par_inter_reappraisal_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq1a_reappraisal)
+check_model(rq1a_reappraisal, check = c("linearity","outliers","vif","qq"))
+
+## ACCEPTANCE
+rq1a_acceptance <- lm(
+  ad_inter_acceptance_avg ~ par_inter_acceptance_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq1a_acceptance)
+check_model(rq1a_acceptance, check = c("linearity","outliers","vif","qq"))
+
+## DISTRACTION
+rq1a_distraction <- lm(
+  ad_inter_distraction_avg ~ par_inter_distraction_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq1a_distraction)
+check_model(rq1a_distraction, check = c("linearity","outliers","vif","qq"))
+
+## SUPPRESSION
+rq1a_suppression <- lm(
+  ad_inter_suppression_avg ~ par_inter_suppression_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq1a_suppression)
+check_model(rq1a_suppression, check = c("linearity","outliers","vif","qq"))
+```
+
+### summary and fdr
+
+```{r}
+modelsummary(
+  list(
+    "problem solving" = rq1a_problem_solving,
+    "corumination"    = rq1a_corumination,
+    "reappraisal"     = rq1a_reappraisal,
+    "acceptance"      = rq1a_acceptance,
+    "distraction"     = rq1a_distraction,
+    "suppression"     = rq1a_suppression
+  ),
+  stars = TRUE,
+  title = "RQ1a: Inter-personal ER strategy use similarity across the daily diary period",
+  notes = "All models adjust for adolescent age, gender, time spent together, parent NA, and adolescent NA"
+)
+
+confint(rq1a_problem_solving, level = 0.95)
+confint(rq1a_corumination, level = 0.95)
+confint(rq1a_reappraisal, level = 0.95)
+confint(rq1a_acceptance, level = 0.95)
+confint(rq1a_distraction, level = 0.95)
+confint(rq1a_suppression, level = 0.95)
+
+rq1a_models <- list(
+  problem_solving = rq1a_problem_solving,
+  corumination    = rq1a_corumination,
+  reappraisal     = rq1a_reappraisal,
+  acceptance      = rq1a_acceptance,
+  distraction     = rq1a_distraction,
+  suppression     = rq1a_suppression
+)
+
+rq1a_preds <- c(
+  "par_inter_problem_solving_avg",
+  "par_inter_corumination_avg",
+  "par_inter_reappraisal_avg",
+  "par_inter_acceptance_avg",
+  "par_inter_distraction_avg",
+  "par_inter_suppression_avg"
+)
+
+rq1a_tests <- data.frame(
+  model     = names(rq1a_models),
+  predictor = rq1a_preds,
+  stringsAsFactors = FALSE
+)
+
+rq1a_tests$p_raw <- mapply(function(m, p) {
+  coef(summary(rq1a_models[[m]]))[p, "Pr(>|t|)"]
+}, rq1a_tests$model, rq1a_tests$predictor)
+
+rq1a_tests <- rq1a_tests %>%
+  mutate(
+    p_fdr  = p.adjust(p_raw, method = "BH"),
+    signif = p_fdr < 0.05
+  )
+
+print(rq1a_tests)
+modelsummary(
+  list(
+    "problem solving" = rq1a_problem_solving,
+    "corumination"    = rq1a_corumination,
+    "reappraisal"     = rq1a_reappraisal,
+    "acceptance"      = rq1a_acceptance,
+    "distraction"     = rq1a_distraction,
+    "suppression"     = rq1a_suppression
+  ),
+  stars = TRUE,
+  title = "RQ1a: Inter-personal ER strategy use similarity across the daily diary period",
+  notes = "All models adjust for adolescent age, gender, time spent together, parent NA, and adolescent NA"
+)
+
+confint(rq1a_problem_solving, level = 0.95)
+confint(rq1a_corumination, level = 0.95)
+confint(rq1a_reappraisal, level = 0.95)
+confint(rq1a_acceptance, level = 0.95)
+confint(rq1a_distraction, level = 0.95)
+confint(rq1a_suppression, level = 0.95)
+
+rq1a_models <- list(
+  problem_solving = rq1a_problem_solving,
+  corumination    = rq1a_corumination,
+  reappraisal     = rq1a_reappraisal,
+  acceptance      = rq1a_acceptance,
+  distraction     = rq1a_distraction,
+  suppression     = rq1a_suppression
+)
+
+rq1a_preds <- c(
+  "par_inter_problem_solving_avg",
+  "par_inter_corumination_avg",
+  "par_inter_reappraisal_avg",
+  "par_inter_acceptance_avg",
+  "par_inter_distraction_avg",
+  "par_inter_suppression_avg"
+)
+
+rq1a_tests <- data.frame(
+  model     = names(rq1a_models),
+  predictor = rq1a_preds,
+  stringsAsFactors = FALSE
+)
+
+rq1a_tests$p_raw <- mapply(function(m, p) {
+  coef(summary(rq1a_models[[m]]))[p, "Pr(>|t|)"]
+}, rq1a_tests$model, rq1a_tests$predictor)
+
+rq1a_tests <- rq1a_tests %>%
+  mutate(
+    p_fdr  = p.adjust(p_raw, method = "BH"),
+    signif = p_fdr < 0.05
+  )
+
+print(rq1a_tests)
+```
+
+## RQ2. Are dyad members’ mean levels of intra-personal ER strategy use positively associated across the daily diary period?
+
+### models
+
+```{r}
+## RQ2a: Intra-personal ER strategy use similarity across the daily diary period
+
+## PROBLEM SOLVING
+rq2a_problem_solving <- lm(
+  ad_intra_problem_solving_avg ~ par_intra_problem_solving_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq2a_problem_solving)
+check_model(rq2a_problem_solving, check = c("linearity","outliers","vif","qq"))
+
+## RUMINATION
+rq2a_rumination <- lm(
+  ad_intra_rumination_avg ~ par_intra_rumination_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq2a_rumination)
+check_model(rq2a_rumination, check = c("linearity","outliers","vif","qq"))
+
+## REAPPRAISAL
+rq2a_reappraisal <- lm(
+  ad_intra_reappraisal_avg ~ par_intra_reappraisal_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq2a_reappraisal)
+check_model(rq2a_reappraisal, check = c("linearity","outliers","vif","qq"))
+
+## ACCEPTANCE
+rq2a_acceptance <- lm(
+  ad_intra_acceptance_avg ~ par_intra_acceptance_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq2a_acceptance)
+check_model(rq2a_acceptance, check = c("linearity","outliers","vif","qq"))
+
+## DISTRACTION
+rq2a_distraction <- lm(
+  ad_intra_distraction_avg ~ par_intra_distraction_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq2a_distraction)
+check_model(rq2a_distraction, check = c("linearity","outliers","vif","qq"))
+
+## SUPPRESSION
+rq2a_suppression <- lm(
+  ad_intra_suppression_avg ~ par_intra_suppression_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq2a_suppression)
+check_model(rq2a_suppression, check = c("linearity","outliers","vif","qq"))
+```
+
+### summary and fdr
+
+```{r}
+modelsummary(
+  list(
+    "problem solving" = rq2a_problem_solving,
+    "rumination"      = rq2a_rumination,
+    "reappraisal"     = rq2a_reappraisal,
+    "acceptance"      = rq2a_acceptance,
+    "distraction"     = rq2a_distraction,
+    "suppression"     = rq2a_suppression
+  ),
+  stars = TRUE,
+  title = "RQ2a: Intra-personal ER strategy use similarity across the daily diary period",
+  notes = "All models adjust for adolescent age, gender, time spent together, parent NA, and adolescent NA"
+)
+
+confint(rq2a_problem_solving, level = 0.95)
+confint(rq2a_rumination, level = 0.95)
+confint(rq2a_reappraisal, level = 0.95)
+confint(rq2a_acceptance, level = 0.95)
+confint(rq2a_distraction, level = 0.95)
+confint(rq2a_suppression, level = 0.95)
+
+rq2a_models <- list(
+  problem_solving = rq2a_problem_solving,
+  rumination      = rq2a_rumination,
+  reappraisal     = rq2a_reappraisal,
+  acceptance      = rq2a_acceptance,
+  distraction     = rq2a_distraction,
+  suppression     = rq2a_suppression
+)
+
+rq2a_preds <- c(
+  "par_intra_problem_solving_avg",
+  "par_intra_rumination_avg",
+  "par_intra_reappraisal_avg",
+  "par_intra_acceptance_avg",
+  "par_intra_distraction_avg",
+  "par_intra_suppression_avg"
+)
+
+rq2a_tests <- data.frame(
+  model     = names(rq2a_models),
+  predictor = rq2a_preds,
+  stringsAsFactors = FALSE
+)
+
+rq2a_tests$p_raw <- mapply(function(m, p) {
+  coef(summary(rq2a_models[[m]]))[p, "Pr(>|t|)"]
+}, rq2a_tests$model, rq2a_tests$predictor)
+
+rq2a_tests$p_fdr  <- p.adjust(rq2a_tests$p_raw, method = "BH")
+rq2a_tests$signif <- rq2a_tests$p_fdr < 0.05
+
+print(rq2a_tests)
+```
+
+## RQ3a. Does parents' mean level of interpersonal ER strategy use predict greater adolescent use of analogous intrapersonal ER strategies across the daily diary period?
+
+### models
+
+```{r}
+## RQ3a: Parent interpersonal ER predicts adolescent intrapersonal ER (analogous)
+
+## PROBLEM SOLVING
+rq3a_problem_solving <- lm(
+  ad_intra_problem_solving_avg ~ par_inter_problem_solving_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq3a_problem_solving)
+check_model(rq3a_problem_solving, check = c("linearity","outliers","vif","qq"))
+
+## RUMINATION
+rq3a_rumination <- lm(
+  ad_intra_rumination_avg ~ par_inter_corumination_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq3a_rumination)
+check_model(rq3a_rumination, check = c("linearity","outliers","vif","qq"))
+
+## REAPPRAISAL
+rq3a_reappraisal <- lm(
+  ad_intra_reappraisal_avg ~ par_inter_reappraisal_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq3a_reappraisal)
+check_model(rq3a_reappraisal, check = c("linearity","outliers","vif","qq"))
+
+## ACCEPTANCE
+rq3a_acceptance <- lm(
+  ad_intra_acceptance_avg ~ par_inter_acceptance_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq3a_acceptance)
+check_model(rq3a_acceptance, check = c("linearity","outliers","vif","qq"))
+
+## DISTRACTION
+rq3a_distraction <- lm(
+  ad_intra_distraction_avg ~ par_inter_distraction_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq3a_distraction)
+check_model(rq3a_distraction, check = c("linearity","outliers","vif","qq"))
+
+## SUPPRESSION
+rq3a_suppression <- lm(
+  ad_intra_suppression_avg ~ par_inter_suppression_avg +
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq3a_suppression)
+check_model(rq3a_suppression, check = c("linearity","outliers","vif","qq"))
+
+```
+
+### summary and fdr
+
+```{r}
+confint(rq3a_problem_solving, level = 0.95)
+confint(rq3a_rumination, level = 0.95)
+confint(rq3a_reappraisal, level = 0.95)
+confint(rq3a_acceptance, level = 0.95)
+confint(rq3a_distraction, level = 0.95)
+confint(rq3a_suppression, level = 0.95)
+
+modelsummary(
+  list(
+    "problem solving" = rq3a_problem_solving,
+    "corumination"    = rq3a_rumination,
+    "reappraisal"     = rq3a_reappraisal,
+    "acceptance"      = rq3a_acceptance,
+    "distraction"     = rq3a_distraction,
+    "suppression"     = rq3a_suppression
+  ),
+  stars = TRUE,
+  title = "RQ3a: Mean-level associations between parent interpersonal and adolescent intrapersonal ER",
+  notes = "All models adjust for adolescent age, gender, time spent together, parent NA, and adolescent NA"
+)
+
+rq3a_models <- list(
+  problem_solving = rq3a_problem_solving,
+  corumination    = rq3a_rumination,
+  reappraisal     = rq3a_reappraisal,
+  acceptance      = rq3a_acceptance,
+  distraction     = rq3a_distraction,
+  suppression     = rq3a_suppression
+)
+
+rq3a_preds <- c(
+  "par_inter_problem_solving_avg",
+  "par_inter_corumination_avg",
+  "par_inter_reappraisal_avg",
+  "par_inter_acceptance_avg",
+  "par_inter_distraction_avg",
+  "par_inter_suppression_avg"
+)
+
+rq3a_tests <- data.frame(
+  model = names(rq3a_models),
+  predictor = rq3a_preds,
+  stringsAsFactors = FALSE
+)
+
+rq3a_tests$p_raw <- mapply(function(m, p) {
+  coef(summary(rq3a_models[[m]]))[p, "Pr(>|t|)"]
+}, rq3a_tests$model, rq3a_tests$predictor)
+
+rq3a_tests <- rq3a_tests %>%
+  mutate(
+    p_fdr  = p.adjust(p_raw, method = "BH"),
+    signif = p_fdr < 0.05
+  )
+
+print(rq3a_tests)
+```
+
+## Moderation models
+```{r}
+rq1a_corumination_age <- lm(
+  ad_inter_corumination_avg ~ par_inter_corumination_avg *
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq1a_corumination_age)
+check_model(rq1a_corumination_age, check = c("linearity","outliers","vif","qq"))
+
+rq1a_corumination_gender <- lm(
+  ad_inter_corumination_avg ~ par_inter_corumination_avg *
+    ad_gender + ad_age + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq1a_corumination_gender)
+
+rq3a_corumination_age <- lm(
+  ad_intra_rumination_avg ~ par_inter_corumination_avg *
+    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq3a_corumination_age)
+check_model(rq3a_corumination_age, check = c("linearity","outliers","vif","qq"))
+
+rq3a_corumination_gender <- lm(
+  ad_intra_rumination_avg ~ par_inter_corumination_avg *
+    ad_gender + ad_age + time_spent_avg + par_negative_affect + ad_negative_affect,
+  data = df
+)
+summary(rq3a_corumination_gender)
+
+```
+# Visualizations
+
+## Visualization Set 1: Ridegline plots to show distribution of strategy use
+```{r}
+```
+
+## Visualization Set 2: Heat map to show the magnitude of the associations for each strategy pair
+```{r}
+```
+
+## Visualization Set 3: Moderation plots to show significant interaction effects across adolescent age and gender
+
+```{r}
+
+```
