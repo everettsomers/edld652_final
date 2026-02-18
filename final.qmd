@@ -20,6 +20,7 @@ library(dplyr)
 library(lme4)
 library(lmerTest)
 library(performance)
+library(gg)
 ```
 
 # Read in data
@@ -482,18 +483,102 @@ rq3a_corumination_gender <- lm(
 summary(rq3a_corumination_gender)
 
 ```
+
 # Visualizations
 
 ## Visualization Set 1: Ridegline plots to show distribution of strategy use
 ```{r}
+df %>%
+  pivot_longer(
+    cols = starts_with("ad_inter_"),
+    names_to = "strategy",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = value, y = strategy)) +
+  geom_density_ridges() 
+
+df %>%
+  pivot_longer(
+    cols = starts_with("ad_intra_"),
+    names_to = "strategy",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = value, y = strategy)) +
+  geom_density_ridges() 
+
+df %>%
+  pivot_longer(
+    cols = starts_with("par_inter_"),
+    names_to = "strategy",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = value, y = strategy)) +
+  geom_density_ridges() 
+
+df %>%
+  pivot_longer(
+    cols = starts_with("par_intra_"),
+    names_to = "strategy",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = value, y = strategy)) +
+  geom_density_ridges()
 ```
 
 ## Visualization Set 2: Heat map to show the magnitude of the associations for each strategy pair
 ```{r}
+betas <- c(
+  problem_solving = coef(rq1a_problem_solving)["par_inter_problem_solving_avg"],
+  corumination    = coef(rq1a_corumination)["par_inter_corumination_avg"],
+  reappraisal     = coef(rq1a_reappraisal)["par_inter_reappraisal_avg"],
+  acceptance      = coef(rq1a_acceptance)["par_inter_acceptance_avg"],
+  distraction     = coef(rq1a_distraction)["par_inter_distraction_avg"],
+  suppression     = coef(rq1a_suppression)["par_inter_suppression_avg"]
+)
+
+names1 <- c(
+  problem_solving = "Problem Solving",
+  corumination    = "Corumination",
+  reappraisal     = "Reappraisal",
+  acceptance      = "Acceptance",
+  distraction     = "Distraction",
+  suppression     = "Suppression"
+)
+
+df1 <- data.frame(
+  label = names1,
+  beta  = as.numeric(betas)
+)
+
+ggplot(df1, aes(label, label, fill = beta)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = round(beta, 3))) +
+  scale_fill_viridis_c(option = "G", na.value = "white", limits = c(-0.3, 0.3)) +
+  labs(
+    title = "Parent-Adolescent Interpersonal ER Strategy Use Correspondence",
+    fill = "Beta"
+  ) +
+  theme_classic()
+
+ggplot(df1, aes(1, label, fill = beta)) +
+  geom_tile(color = "white") +
+  geom_text(aes(label = round(beta, 3))) +
+  scale_fill_viridis_c(option = "G", na.value = "white", limits = c(-0.3, 0.3)) +
+  labs(
+    title = "Parent-Adolescent Interpersonal ER Strategy Use Correspondence",
+    fill = "β",
+    y = "Interpersonal ER Strategy"
+  ) +
+  theme_classic() +
+  theme(
+    axis.text.x=element_blank(),
+    axis.title.x=element_blank(),
+    axis.ticks.x=element_blank()
+  )
 ```
 
 ## Visualization Set 3: Moderation plots to show significant interaction effects across adolescent age and gender
 
 ```{r}
-
+# Unfortunately no moderations were significant, so I will present the significant linear models for each rq instead
 ```
