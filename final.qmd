@@ -21,6 +21,7 @@ library(lme4)
 library(lmerTest)
 library(performance)
 library(gg)
+library(RColorBrewer)
 ```
 
 # Read in data
@@ -41,7 +42,7 @@ rq1a_problem_solving <- lm(
   data = df
 )
 summary(rq1a_problem_solving)
-check_model(rq1a_problem_solving, check = c("linearity","outliers","vif","qq"))
+check_model(rq1a_problem_solving, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## CORUMINATION
 rq1a_corumination <- lm(
@@ -50,7 +51,7 @@ rq1a_corumination <- lm(
   data = df
 )
 summary(rq1a_corumination)
-check_model(rq1a_corumination, check = c("linearity","outliers","vif","qq"))
+check_model(rq1a_corumination, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## REAPPRAISAL
 rq1a_reappraisal <- lm(
@@ -59,7 +60,7 @@ rq1a_reappraisal <- lm(
   data = df
 )
 summary(rq1a_reappraisal)
-check_model(rq1a_reappraisal, check = c("linearity","outliers","vif","qq"))
+check_model(rq1a_reappraisal, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## ACCEPTANCE
 rq1a_acceptance <- lm(
@@ -68,7 +69,7 @@ rq1a_acceptance <- lm(
   data = df
 )
 summary(rq1a_acceptance)
-check_model(rq1a_acceptance, check = c("linearity","outliers","vif","qq"))
+check_model(rq1a_acceptance, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## DISTRACTION
 rq1a_distraction <- lm(
@@ -77,7 +78,7 @@ rq1a_distraction <- lm(
   data = df
 )
 summary(rq1a_distraction)
-check_model(rq1a_distraction, check = c("linearity","outliers","vif","qq"))
+check_model(rq1a_distraction, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## SUPPRESSION
 rq1a_suppression <- lm(
@@ -86,7 +87,7 @@ rq1a_suppression <- lm(
   data = df
 )
 summary(rq1a_suppression)
-check_model(rq1a_suppression, check = c("linearity","outliers","vif","qq"))
+check_model(rq1a_suppression, check = c("linearity","outliers","vif","qq","homogeneity"))
 ```
 
 ### summary and fdr
@@ -220,7 +221,7 @@ rq2a_problem_solving <- lm(
   data = df
 )
 summary(rq2a_problem_solving)
-check_model(rq2a_problem_solving, check = c("linearity","outliers","vif","qq"))
+check_model(rq2a_problem_solving, check =c("linearity","outliers","vif","qq","homogeneity"))
 
 ## RUMINATION
 rq2a_rumination <- lm(
@@ -229,7 +230,7 @@ rq2a_rumination <- lm(
   data = df
 )
 summary(rq2a_rumination)
-check_model(rq2a_rumination, check = c("linearity","outliers","vif","qq"))
+check_model(rq2a_rumination, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## REAPPRAISAL
 rq2a_reappraisal <- lm(
@@ -238,7 +239,7 @@ rq2a_reappraisal <- lm(
   data = df
 )
 summary(rq2a_reappraisal)
-check_model(rq2a_reappraisal, check = c("linearity","outliers","vif","qq"))
+check_model(rq2a_reappraisal, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## ACCEPTANCE
 rq2a_acceptance <- lm(
@@ -247,7 +248,7 @@ rq2a_acceptance <- lm(
   data = df
 )
 summary(rq2a_acceptance)
-check_model(rq2a_acceptance, check = c("linearity","outliers","vif","qq"))
+check_model(rq2a_acceptance, check =c("linearity","outliers","vif","qq","homogeneity"))
 
 ## DISTRACTION
 rq2a_distraction <- lm(
@@ -256,7 +257,7 @@ rq2a_distraction <- lm(
   data = df
 )
 summary(rq2a_distraction)
-check_model(rq2a_distraction, check = c("linearity","outliers","vif","qq"))
+check_model(rq2a_distraction, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## SUPPRESSION
 rq2a_suppression <- lm(
@@ -265,7 +266,7 @@ rq2a_suppression <- lm(
   data = df
 )
 summary(rq2a_suppression)
-check_model(rq2a_suppression, check = c("linearity","outliers","vif","qq"))
+check_model(rq2a_suppression, check = c("linearity","outliers","vif","qq","homogeneity"))
 ```
 
 ### summary and fdr
@@ -481,7 +482,6 @@ rq3a_corumination_gender <- lm(
   data = df
 )
 summary(rq3a_corumination_gender)
-
 ```
 
 # Visualizations
@@ -494,8 +494,27 @@ df %>%
     names_to = "strategy",
     values_to = "value"
   ) %>%
-  ggplot(aes(x = value, y = strategy)) +
-  geom_density_ridges() 
+  ggplot(aes(x = value, y = strategy, fill=strategy)) +
+  scale_y_discrete(labels = c(
+    "ad_inter_problem_solving_avg" = "Problem Solving",
+    "ad_inter_corumination_avg"    = "Corumination",
+    "ad_inter_reappraisal_avg"     = "Reappraisal",
+    "ad_inter_acceptance_avg"      = "Acceptance",
+    "ad_inter_distraction_avg"     = "Distraction",
+    "ad_inter_suppression_avg"     = "Suppression"
+  ), expand = c(0.01, 0)) +
+  geom_density_ridges(alpha = .7) +
+  theme_classic()  +
+  labs(x = "Average Strategy Use (Mean-Centered)",
+       y = "Interpersonal Strategy",
+       title = "Distributions of Parents' Use of Interpersonal Strategies") +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  theme(plot.title = element_text(size = 16, hjust = 0.5),
+      axis.title = element_text(size = 12, face = "bold"),
+      axis.text = element_text(size = 10),
+      legend.position = "none"                          
+  ) +
+  scale_fill_brewer(palette="Set2")
 
 df %>%
   pivot_longer(
@@ -504,7 +523,17 @@ df %>%
     values_to = "value"
   ) %>%
   ggplot(aes(x = value, y = strategy)) +
-  geom_density_ridges() 
+   scale_y_discrete(labels = c(
+    "ad_intra_problem_solving_avg" = "Problem Solving",
+    "ad_intra_rumination_avg"      = "Rumination",
+    "ad_intra_reappraisal_avg"     = "Reappraisal",
+    "ad_intra_acceptance_avg"      = "Acceptance",
+    "ad_intra_distraction_avg"     = "Distraction",
+    "ad_intra_suppression_avg"     = "Suppression"
+  ), expand = c(0.01, 0)) +
+  geom_density_ridges() +
+  theme_classic()  +
+  scale_x_continuous(expand = c(0.01, 0))
 
 df %>%
   pivot_longer(
@@ -513,7 +542,18 @@ df %>%
     values_to = "value"
   ) %>%
   ggplot(aes(x = value, y = strategy)) +
-  geom_density_ridges() 
+     scale_y_discrete(labels = c(
+    "par_inter_problem_solving_avg" = "Problem Solving",
+    "par_inter_corumination_avg"    = "Corumination",
+    "par_inter_reappraisal_avg"     = "Reappraisal",
+    "par_inter_acceptance_avg"      = "Acceptance",
+    "par_inter_distraction_avg"     = "Distraction",
+    "par_inter_suppression_avg"     = "Suppression"
+  ), expand = c(0.01, 0)) +
+  geom_density_ridges() +
+  theme_classic()  +
+  scale_x_continuous(expand = c(0.01, 0))
+
 
 df %>%
   pivot_longer(
@@ -522,20 +562,21 @@ df %>%
     values_to = "value"
   ) %>%
   ggplot(aes(x = value, y = strategy)) +
-  geom_density_ridges()
+  scale_y_discrete(labels = c(
+    "par_intra_problem_solving_avg" = "Problem Solving",
+    "par_intra_rumination_avg"      = "Rumination",
+    "par_intra_reappraisal_avg"     = "Reappraisal",
+    "par_intra_acceptance_avg"      = "Acceptance",
+    "par_intra_distraction_avg"     = "Distraction",
+    "par_intra_suppression_avg"     = "Suppression"
+  ), expand = c(0.01, 0)) +
+  geom_density_ridges() +
+  theme_classic()  +
+  scale_x_continuous(expand = c(0.01, 0))
 ```
 
 ## Visualization Set 2: Heat map to show the magnitude of the associations for each strategy pair
 ```{r}
-betas <- c(
-  problem_solving = coef(rq1a_problem_solving)["par_inter_problem_solving_avg"],
-  corumination    = coef(rq1a_corumination)["par_inter_corumination_avg"],
-  reappraisal     = coef(rq1a_reappraisal)["par_inter_reappraisal_avg"],
-  acceptance      = coef(rq1a_acceptance)["par_inter_acceptance_avg"],
-  distraction     = coef(rq1a_distraction)["par_inter_distraction_avg"],
-  suppression     = coef(rq1a_suppression)["par_inter_suppression_avg"]
-)
-
 names1 <- c(
   problem_solving = "Problem Solving",
   corumination    = "Corumination",
@@ -543,6 +584,15 @@ names1 <- c(
   acceptance      = "Acceptance",
   distraction     = "Distraction",
   suppression     = "Suppression"
+)
+
+betas <- c(
+  problem_solving = coef(rq1a_problem_solving)["par_inter_problem_solving_avg"],
+  corumination    = coef(rq1a_corumination)["par_inter_corumination_avg"],
+  reappraisal     = coef(rq1a_reappraisal)["par_inter_reappraisal_avg"],
+  acceptance      = coef(rq1a_acceptance)["par_inter_acceptance_avg"],
+  distraction     = coef(rq1a_distraction)["par_inter_distraction_avg"],
+  suppression     = coef(rq1a_suppression)["par_inter_suppression_avg"]
 )
 
 df1 <- data.frame(
@@ -562,12 +612,13 @@ ggplot(df1, aes(label, label, fill = beta)) +
 
 ggplot(df1, aes(1, label, fill = beta)) +
   geom_tile(color = "white") +
-  geom_text(aes(label = round(beta, 3))) +
+  geom_text(aes(label = paste0(round(beta, 3), ifelse(label %in% c("Corumination","Distraction","Suppression"), "*", "")))) +
   scale_fill_viridis_c(option = "G", na.value = "white", limits = c(-0.3, 0.3)) +
   labs(
     title = "Parent-Adolescent Interpersonal ER Strategy Use Correspondence",
     fill = "β",
-    y = "Interpersonal ER Strategy"
+    y = "Interpersonal ER Strategy",
+    caption = expression("* " * italic(p) * " < .05")
   ) +
   theme_classic() +
   theme(
@@ -581,4 +632,52 @@ ggplot(df1, aes(1, label, fill = beta)) +
 
 ```{r}
 # Unfortunately no moderations were significant, so I will present the significant linear models for each rq instead
+ggplot(df, aes(x = par_inter_corumination_avg, y = ad_inter_corumination_avg)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(
+    x = "Parent Interpersonal Corumination",
+    y = "Adolescent Interpersonal Corumination",
+   title = "Corumination"
+  ) +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  scale_y_continuous(expand = c(0.01, 0)) +
+  theme_classic()
+
+ggplot(df, aes(x = par_inter_distraction_avg, y = ad_inter_distraction_avg)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(
+    x = "Parent Interpersonal Distraction",
+    y = "Adolescent Interpersonal Distraction",
+    title = "Distraction"
+  ) + 
+  scale_x_continuous(expand = c(0.01, 0)) +
+  scale_y_continuous(expand = c(0.01, 0)) +
+  theme_classic()
+
+
+ggplot(df, aes(x = par_inter_suppression_avg, y = ad_inter_suppression_avg)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(
+    x = "Parent Interpersonal Suppression",
+    y = "Adolescent Interpersonal Suppression",
+    title = "Suppression"
+  ) +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  scale_y_continuous(expand = c(0.01, 0)) +
+  theme_classic()
+
+ggplot(df, aes(x = par_inter_corumination_avg, y = ad_intra_rumination_avg)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = TRUE) +
+  labs(
+    x = "Parent Interpersonal Corumination",
+    y = "Adolescent Intrapersonal Rumination",
+   title = "Corumination-Rumination"
+  ) +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  scale_y_continuous(expand = c(0.01, 0)) +
+  theme_classic()
 ```
