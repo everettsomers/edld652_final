@@ -17,11 +17,9 @@ message: false
 ```{r}
 library(tidyverse)
 library(dplyr)
-library(lme4)
-library(lmerTest)
 library(performance)
-library(gg)
 library(RColorBrewer)
+library(modelsummary)
 ```
 
 # Read in data
@@ -488,6 +486,17 @@ summary(rq3a_corumination_gender)
 
 ## Visualization Set 1: Ridegline plots to show distribution of strategy use
 ```{r}
+  viz1theme <- function(base_family = "Avenir") {
+    theme_classic(base_family = base_family) +
+      theme(
+        plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+        axis.title = element_text(size = 12, face = "bold"),
+        axis.text = element_text(size = 10),
+        plot.background = element_rect(fill = "white", color = NA),
+        legend.position = "none"                          
+      )
+      }
+
 df %>%
   pivot_longer(
     cols = starts_with("ad_inter_"),
@@ -503,18 +512,14 @@ df %>%
     "ad_inter_distraction_avg"     = "Distraction",
     "ad_inter_suppression_avg"     = "Suppression"
   ), expand = c(0.01, 0)) +
-  geom_density_ridges(alpha = .7) +
-  theme_classic()  +
+  geom_density_ridges(alpha = .7, scale = 1.2) +
   labs(x = "Average Strategy Use (Mean-Centered)",
        y = "Interpersonal Strategy",
        title = "Distributions of Parents' Use of Interpersonal Strategies") +
   scale_x_continuous(expand = c(0.01, 0)) +
-  theme(plot.title = element_text(size = 16, hjust = 0.5),
-      axis.title = element_text(size = 12, face = "bold"),
-      axis.text = element_text(size = 10),
-      legend.position = "none"                          
-  ) +
-  scale_fill_brewer(palette="Set2")
+  theme(legend.position = "none") +
+  scale_fill_brewer(palette="Set2") +
+  viz1theme()
 
 df %>%
   pivot_longer(
@@ -522,7 +527,7 @@ df %>%
     names_to = "strategy",
     values_to = "value"
   ) %>%
-  ggplot(aes(x = value, y = strategy)) +
+  ggplot(aes(x = value, y = strategy, fill=strategy)) +
    scale_y_discrete(labels = c(
     "ad_intra_problem_solving_avg" = "Problem Solving",
     "ad_intra_rumination_avg"      = "Rumination",
@@ -531,9 +536,14 @@ df %>%
     "ad_intra_distraction_avg"     = "Distraction",
     "ad_intra_suppression_avg"     = "Suppression"
   ), expand = c(0.01, 0)) +
-  geom_density_ridges() +
-  theme_classic()  +
-  scale_x_continuous(expand = c(0.01, 0))
+  geom_density_ridges(alpha = .7, scale = 1.2) +
+  labs(x = "Average Strategy Use (Mean-Centered)",
+       y = "Interpersonal Strategy",
+       title = "Distributions of Parents' Use of Interpersonal Strategies") +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  theme(legend.position = "none") +
+  scale_fill_brewer(palette="Set2") +
+  viz1theme()
 
 df %>%
   pivot_longer(
@@ -541,7 +551,7 @@ df %>%
     names_to = "strategy",
     values_to = "value"
   ) %>%
-  ggplot(aes(x = value, y = strategy)) +
+  ggplot(aes(x = value, y = strategy, fill=strategy)) +
      scale_y_discrete(labels = c(
     "par_inter_problem_solving_avg" = "Problem Solving",
     "par_inter_corumination_avg"    = "Corumination",
@@ -550,10 +560,14 @@ df %>%
     "par_inter_distraction_avg"     = "Distraction",
     "par_inter_suppression_avg"     = "Suppression"
   ), expand = c(0.01, 0)) +
-  geom_density_ridges() +
-  theme_classic()  +
-  scale_x_continuous(expand = c(0.01, 0))
-
+  geom_density_ridges(alpha = .7, scale = 1.2) +
+  labs(x = "Average Strategy Use (Mean-Centered)",
+       y = "Interpersonal Strategy",
+       title = "Distributions of Parents' Use of Interpersonal Strategies") +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  theme(legend.position = "none") +
+  scale_fill_brewer(palette="Set2") +
+  viz1theme()
 
 df %>%
   pivot_longer(
@@ -561,7 +575,7 @@ df %>%
     names_to = "strategy",
     values_to = "value"
   ) %>%
-  ggplot(aes(x = value, y = strategy)) +
+  ggplot(aes(x = value, y = strategy, fill=strategy)) +
   scale_y_discrete(labels = c(
     "par_intra_problem_solving_avg" = "Problem Solving",
     "par_intra_rumination_avg"      = "Rumination",
@@ -570,9 +584,14 @@ df %>%
     "par_intra_distraction_avg"     = "Distraction",
     "par_intra_suppression_avg"     = "Suppression"
   ), expand = c(0.01, 0)) +
-  geom_density_ridges() +
-  theme_classic()  +
-  scale_x_continuous(expand = c(0.01, 0))
+  geom_density_ridges(alpha = .7, scale = 1.2) +
+  labs(x = "Average Strategy Use (Mean-Centered)",
+       y = "Interpersonal Strategy",
+       title = "Distributions of Parents' Use of Interpersonal Strategies") +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  theme(legend.position = "none") +
+  scale_fill_brewer(palette="Set2") +
+  viz1theme()
 ```
 
 ## Visualization Set 2: Heat map to show the magnitude of the associations for each strategy pair
@@ -586,7 +605,16 @@ names1 <- c(
   suppression     = "Suppression"
 )
 
-betas <- c(
+names2 <- c(
+  problem_solving = "Problem Solving",
+  corumination    = "Rumination",
+  reappraisal     = "Reappraisal",
+  acceptance      = "Acceptance",
+  distraction     = "Distraction",
+  suppression     = "Suppression"
+)
+
+betas1 <- c(
   problem_solving = coef(rq1a_problem_solving)["par_inter_problem_solving_avg"],
   corumination    = coef(rq1a_corumination)["par_inter_corumination_avg"],
   reappraisal     = coef(rq1a_reappraisal)["par_inter_reappraisal_avg"],
@@ -595,9 +623,35 @@ betas <- c(
   suppression     = coef(rq1a_suppression)["par_inter_suppression_avg"]
 )
 
+betas2 <- c(
+  problem_solving = coef(rq2a_problem_solving)["par_intra_problem_solving_avg"],
+  rumination      = coef(rq2a_rumination)["par_intra_rumination_avg"],
+  reappraisal     = coef(rq2a_reappraisal)["par_intra_reappraisal_avg"],
+  acceptance      = coef(rq2a_acceptance)["par_intra_acceptance_avg"],
+  distraction     = coef(rq2a_distraction)["par_intra_distraction_avg"],
+  suppression     = coef(rq2a_suppression)["par_intra_suppression_avg"]
+)
+
+betas3 <- c(
+  problem_solving = coef(rq3a_problem_solving)["par_inter_problem_solving_avg"],
+  corumination    = coef(rq3a_rumination)["par_inter_corumination_avg"],
+  reappraisal     = coef(rq3a_reappraisal)["par_inter_reappraisal_avg"],
+  acceptance      = coef(rq3a_acceptance)["par_inter_acceptance_avg"],
+  distraction     = coef(rq3a_distraction)["par_inter_distraction_avg"],
+  suppression     = coef(rq3a_suppression)["par_inter_suppression_avg"]
+)
+
 df1 <- data.frame(
   label = names1,
-  beta  = as.numeric(betas)
+  beta  = as.numeric(betas1)
+)
+df2 <- data.frame(
+  label = names2,
+  beta  = as.numeric(betas2)
+)
+df3 <- data.frame(
+  label = names1,
+  beta  = as.numeric(betas3)
 )
 
 ggplot(df1, aes(label, label, fill = beta)) +
@@ -628,13 +682,63 @@ ggplot(df1, aes(1, label, fill = beta)) +
   )
 ```
 
+## Visualization Set 2.2: I instead chose to use bar plots to demonstrate significant associations
+```{r}
+ggplot(df1,
+       aes(x = beta,
+           y = reorder(label, abs(beta)))) +
+  geom_col(fill="gray80") +
+  geom_col(data=filter(df1, label %in% c("Corumination","Distraction","Suppression")), fill="deepskyblue3") +
+  geom_text(aes(label = paste0(round(beta, 3), ifelse(label %in% c("Corumination","Distraction","Suppression"), "*", ""))), hjust = 1.5, size = 6) +
+   labs(
+    title = "Parent-Adolescent Interpersonal ER Strategy Use Correspondence",
+    x = "Beta",
+    y = "Interpersonal ER Strategy",
+    caption = expression("* " * italic(p) * " < .05")
+  ) +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  scale_y_discrete(expand = c(0.01, 0)) +
+  viz1theme()
+
+ggplot(df2,
+       aes(x = beta,
+           y = reorder(label, abs(beta)))) +
+  geom_col(fill="gray80") +
+  geom_text(aes(label = paste0(round(beta, 3))), hjust = 1.5, size = 6) +
+   labs(
+    title = "Parent-Adolescent Intrapersonal ER Strategy Use Correspondence",
+    x = "Beta",
+    y = "Intrapersonal ER Strategy",
+    caption = expression("* " * italic(p) * " < .05")
+  ) +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  scale_y_discrete(expand = c(0.01, 0)) +
+  viz1theme()
+
+ggplot(df3,
+       aes(x = beta,
+           y = reorder(label, abs(beta)))) +
+  geom_col(fill="gray80") +
+  geom_col(data=filter(df3, label %in% c("Corumination")), fill="deepskyblue3") +
+  geom_text(aes(label = paste0(round(beta, 3), ifelse(label %in% c("Corumination"), "*", ""))), hjust = 1.5, size = 6) +
+   labs(
+    title = "Association between Parents' Interpersonal ER and Adolescents' Use of Analagous Intrapersonal Strategies",
+    x = "Beta",
+    y = "Interpersonal ER Strategy",
+    caption = expression("* " * italic(p) * " < .05")
+  ) +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  scale_y_discrete(expand = c(0.01, 0)) +
+  viz1theme()
+```
+
 ## Visualization Set 3: Moderation plots to show significant interaction effects across adolescent age and gender
 
 ```{r}
 # Unfortunately no moderations were significant, so I will present the significant linear models for each rq instead
 ggplot(df, aes(x = par_inter_corumination_avg, y = ad_inter_corumination_avg)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = TRUE) +
+  geom_point(color = "gray30", alpha = .8) +
+  geom_smooth(method = "lm", se = TRUE, color = "deepskyblue4") +
   labs(
     x = "Parent Interpersonal Corumination",
     y = "Adolescent Interpersonal Corumination",
@@ -642,11 +746,11 @@ ggplot(df, aes(x = par_inter_corumination_avg, y = ad_inter_corumination_avg)) +
   ) +
   scale_x_continuous(expand = c(0.01, 0)) +
   scale_y_continuous(expand = c(0.01, 0)) +
-  theme_classic()
+  viz1theme()
 
 ggplot(df, aes(x = par_inter_distraction_avg, y = ad_inter_distraction_avg)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = TRUE) +
+  geom_point(color = "gray30", alpha = .8) +
+  geom_smooth(method = "lm", se = TRUE, color = "deepskyblue4") +
   labs(
     x = "Parent Interpersonal Distraction",
     y = "Adolescent Interpersonal Distraction",
@@ -654,12 +758,12 @@ ggplot(df, aes(x = par_inter_distraction_avg, y = ad_inter_distraction_avg)) +
   ) + 
   scale_x_continuous(expand = c(0.01, 0)) +
   scale_y_continuous(expand = c(0.01, 0)) +
-  theme_classic()
+  viz1theme()
 
 
 ggplot(df, aes(x = par_inter_suppression_avg, y = ad_inter_suppression_avg)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = TRUE) +
+  geom_point(color = "gray30", alpha = .8) +
+  geom_smooth(method = "lm", se = TRUE, color = "deepskyblue4") +
   labs(
     x = "Parent Interpersonal Suppression",
     y = "Adolescent Interpersonal Suppression",
@@ -667,17 +771,17 @@ ggplot(df, aes(x = par_inter_suppression_avg, y = ad_inter_suppression_avg)) +
   ) +
   scale_x_continuous(expand = c(0.01, 0)) +
   scale_y_continuous(expand = c(0.01, 0)) +
-  theme_classic()
+  viz1theme()
 
 ggplot(df, aes(x = par_inter_corumination_avg, y = ad_intra_rumination_avg)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = TRUE) +
+  geom_point(color = "gray30", alpha = .8) +
+  geom_smooth(method = "lm", se = TRUE, color = "deepskyblue4") +
   labs(
     x = "Parent Interpersonal Corumination",
     y = "Adolescent Intrapersonal Rumination",
-   title = "Corumination-Rumination"
+   title = "Association between Parents' use of Corumination and Adolescents' Use of Intrapersonal Rumination"
   ) +
   scale_x_continuous(expand = c(0.01, 0)) +
   scale_y_continuous(expand = c(0.01, 0)) +
-  theme_classic()
+  viz1theme()
 ```
