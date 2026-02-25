@@ -40,7 +40,7 @@ rq1a_problem_solving <- lm(
   data = df
 )
 summary(rq1a_problem_solving)
-check_model(rq1a_problem_solving, check = c("linearity","outliers","vif","qq","homogeneity"))
+check_model()
 
 ## CORUMINATION
 rq1a_corumination <- lm(
@@ -49,7 +49,6 @@ rq1a_corumination <- lm(
   data = df
 )
 summary(rq1a_corumination)
-check_model(rq1a_corumination, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## REAPPRAISAL
 rq1a_reappraisal <- lm(
@@ -58,7 +57,6 @@ rq1a_reappraisal <- lm(
   data = df
 )
 summary(rq1a_reappraisal)
-check_model(rq1a_reappraisal, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## ACCEPTANCE
 rq1a_acceptance <- lm(
@@ -67,7 +65,6 @@ rq1a_acceptance <- lm(
   data = df
 )
 summary(rq1a_acceptance)
-check_model(rq1a_acceptance, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## DISTRACTION
 rq1a_distraction <- lm(
@@ -76,7 +73,6 @@ rq1a_distraction <- lm(
   data = df
 )
 summary(rq1a_distraction)
-check_model(rq1a_distraction, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## SUPPRESSION
 rq1a_suppression <- lm(
@@ -85,7 +81,6 @@ rq1a_suppression <- lm(
   data = df
 )
 summary(rq1a_suppression)
-check_model(rq1a_suppression, check = c("linearity","outliers","vif","qq","homogeneity"))
 ```
 
 ### summary and fdr
@@ -104,13 +99,6 @@ modelsummary(
   title = "RQ1a: Inter-personal ER strategy use similarity across the daily diary period",
   notes = "All models adjust for adolescent age, gender, time spent together, parent NA, and adolescent NA"
 )
-
-confint(rq1a_problem_solving, level = 0.95)
-confint(rq1a_corumination, level = 0.95)
-confint(rq1a_reappraisal, level = 0.95)
-confint(rq1a_acceptance, level = 0.95)
-confint(rq1a_distraction, level = 0.95)
-confint(rq1a_suppression, level = 0.95)
 
 rq1a_models <- list(
   problem_solving = rq1a_problem_solving,
@@ -160,13 +148,6 @@ modelsummary(
   title = "RQ1a: Inter-personal ER strategy use similarity across the daily diary period",
   notes = "All models adjust for adolescent age, gender, time spent together, parent NA, and adolescent NA"
 )
-
-confint(rq1a_problem_solving, level = 0.95)
-confint(rq1a_corumination, level = 0.95)
-confint(rq1a_reappraisal, level = 0.95)
-confint(rq1a_acceptance, level = 0.95)
-confint(rq1a_distraction, level = 0.95)
-confint(rq1a_suppression, level = 0.95)
 
 rq1a_models <- list(
   problem_solving = rq1a_problem_solving,
@@ -218,7 +199,6 @@ rq2a_problem_solving <- lm(
     ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
   data = df
 )
-summary(rq2a_problem_solving)
 check_model(rq2a_problem_solving, check =c("linearity","outliers","vif","qq","homogeneity"))
 
 ## RUMINATION
@@ -228,7 +208,6 @@ rq2a_rumination <- lm(
   data = df
 )
 summary(rq2a_rumination)
-check_model(rq2a_rumination, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## REAPPRAISAL
 rq2a_reappraisal <- lm(
@@ -237,7 +216,6 @@ rq2a_reappraisal <- lm(
   data = df
 )
 summary(rq2a_reappraisal)
-check_model(rq2a_reappraisal, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## ACCEPTANCE
 rq2a_acceptance <- lm(
@@ -246,7 +224,6 @@ rq2a_acceptance <- lm(
   data = df
 )
 summary(rq2a_acceptance)
-check_model(rq2a_acceptance, check =c("linearity","outliers","vif","qq","homogeneity"))
 
 ## DISTRACTION
 rq2a_distraction <- lm(
@@ -255,7 +232,6 @@ rq2a_distraction <- lm(
   data = df
 )
 summary(rq2a_distraction)
-check_model(rq2a_distraction, check = c("linearity","outliers","vif","qq","homogeneity"))
 
 ## SUPPRESSION
 rq2a_suppression <- lm(
@@ -264,7 +240,6 @@ rq2a_suppression <- lm(
   data = df
 )
 summary(rq2a_suppression)
-check_model(rq2a_suppression, check = c("linearity","outliers","vif","qq","homogeneity"))
 ```
 
 ### summary and fdr
@@ -283,13 +258,6 @@ modelsummary(
   title = "RQ2a: Intra-personal ER strategy use similarity across the daily diary period",
   notes = "All models adjust for adolescent age, gender, time spent together, parent NA, and adolescent NA"
 )
-
-confint(rq2a_problem_solving, level = 0.95)
-confint(rq2a_rumination, level = 0.95)
-confint(rq2a_reappraisal, level = 0.95)
-confint(rq2a_acceptance, level = 0.95)
-confint(rq2a_distraction, level = 0.95)
-confint(rq2a_suppression, level = 0.95)
 
 rq2a_models <- list(
   problem_solving = rq2a_problem_solving,
@@ -339,7 +307,6 @@ rq3a_problem_solving <- lm(
   data = df
 )
 summary(rq3a_problem_solving)
-check_model(rq3a_problem_solving, check = c("linearity","outliers","vif","qq"))
 
 ## RUMINATION
 rq3a_rumination <- lm(
@@ -348,7 +315,6 @@ rq3a_rumination <- lm(
   data = df
 )
 summary(rq3a_rumination)
-check_model(rq3a_rumination, check = c("linearity","outliers","vif","qq"))
 
 ## REAPPRAISAL
 rq3a_reappraisal <- lm(
@@ -357,7 +323,6 @@ rq3a_reappraisal <- lm(
   data = df
 )
 summary(rq3a_reappraisal)
-check_model(rq3a_reappraisal, check = c("linearity","outliers","vif","qq"))
 
 ## ACCEPTANCE
 rq3a_acceptance <- lm(
@@ -366,7 +331,6 @@ rq3a_acceptance <- lm(
   data = df
 )
 summary(rq3a_acceptance)
-check_model(rq3a_acceptance, check = c("linearity","outliers","vif","qq"))
 
 ## DISTRACTION
 rq3a_distraction <- lm(
@@ -375,7 +339,6 @@ rq3a_distraction <- lm(
   data = df
 )
 summary(rq3a_distraction)
-check_model(rq3a_distraction, check = c("linearity","outliers","vif","qq"))
 
 ## SUPPRESSION
 rq3a_suppression <- lm(
@@ -384,20 +347,12 @@ rq3a_suppression <- lm(
   data = df
 )
 summary(rq3a_suppression)
-check_model(rq3a_suppression, check = c("linearity","outliers","vif","qq"))
 
 ```
 
 ### summary and fdr
 
 ```{r}
-confint(rq3a_problem_solving, level = 0.95)
-confint(rq3a_rumination, level = 0.95)
-confint(rq3a_reappraisal, level = 0.95)
-confint(rq3a_acceptance, level = 0.95)
-confint(rq3a_distraction, level = 0.95)
-confint(rq3a_suppression, level = 0.95)
-
 modelsummary(
   list(
     "problem solving" = rq3a_problem_solving,
@@ -447,39 +402,6 @@ rq3a_tests <- rq3a_tests %>%
   )
 
 print(rq3a_tests)
-```
-
-## Moderation models
-```{r}
-rq1a_corumination_age <- lm(
-  ad_inter_corumination_avg ~ par_inter_corumination_avg *
-    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
-  data = df
-)
-summary(rq1a_corumination_age)
-check_model(rq1a_corumination_age, check = c("linearity","outliers","vif","qq"))
-
-rq1a_corumination_gender <- lm(
-  ad_inter_corumination_avg ~ par_inter_corumination_avg *
-    ad_gender + ad_age + time_spent_avg + par_negative_affect + ad_negative_affect,
-  data = df
-)
-summary(rq1a_corumination_gender)
-
-rq3a_corumination_age <- lm(
-  ad_intra_rumination_avg ~ par_inter_corumination_avg *
-    ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
-  data = df
-)
-summary(rq3a_corumination_age)
-check_model(rq3a_corumination_age, check = c("linearity","outliers","vif","qq"))
-
-rq3a_corumination_gender <- lm(
-  ad_intra_rumination_avg ~ par_inter_corumination_avg *
-    ad_gender + ad_age + time_spent_avg + par_negative_affect + ad_negative_affect,
-  data = df
-)
-summary(rq3a_corumination_gender)
 ```
 
 # Visualizations
@@ -784,4 +706,6 @@ ggplot(df, aes(x = par_inter_corumination_avg, y = ad_intra_rumination_avg)) +
   scale_x_continuous(expand = c(0.01, 0)) +
   scale_y_continuous(expand = c(0.01, 0)) +
   viz1theme()
+```
+
 ```
