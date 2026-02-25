@@ -3,8 +3,5 @@
 .RData
 .Ruserdata
 .secrets
-<<<<<<< HEAD
-/data/
-=======
-.data/
->>>>>>> origin/main
+.dyad_mean_data_all.csv
+dyad_mean_data_all.csv
