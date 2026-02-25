@@ -20,6 +20,7 @@ library(dplyr)
 library(performance)
 library(RColorBrewer)
 library(modelsummary)
+library(ggridges)
 ```
 
 # Read in data
@@ -40,7 +41,6 @@ rq1a_problem_solving <- lm(
   data = df
 )
 summary(rq1a_problem_solving)
-check_model()
 
 ## CORUMINATION
 rq1a_corumination <- lm(
@@ -199,7 +199,7 @@ rq2a_problem_solving <- lm(
     ad_age + ad_gender + time_spent_avg + par_negative_affect + ad_negative_affect,
   data = df
 )
-check_model(rq2a_problem_solving, check =c("linearity","outliers","vif","qq","homogeneity"))
+summary(rq2a_problem_solving)
 
 ## RUMINATION
 rq2a_rumination <- lm(
