@@ -3,8 +3,4 @@
 .RData
 .Ruserdata
 .secrets
-<<<<<<< HEAD
-.data/
-=======
-.data
->>>>>>> origin/main
+/data/
