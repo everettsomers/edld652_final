@@ -24,7 +24,7 @@ library(ggridges)
 ```
 
 ```{r}
-df <- read.csv("dyad_mean_data_all.csv")
+df <- read.csv("dyad_mean_data_all2.csv")
 ```
 
 # Linear models
@@ -442,9 +442,9 @@ df %>%
     "ad_inter_suppression_avg"     = "Suppression"
   ), expand = c(0.01, 0)) +
   geom_density_ridges(alpha = .7, scale = 1.7) +
-  labs(x = "Average Strategy Use (Mean-Centered)",
+  labs(x = "Average Strategy Use",
        y = "Interpersonal Strategy",
-       title = "Distributions of Parents' Use of Interpersonal Strategies") +
+       title = "Distributions of Adolescents' Use of Interpersonal Strategies") +
   scale_x_continuous(expand = c(0.01, 0)) +
   theme(legend.position = "none") +
   scale_fill_brewer(palette="Set2") +
@@ -466,9 +466,9 @@ df %>%
     "ad_intra_suppression_avg"     = "Suppression"
   ), expand = c(0.01, 0)) +
   geom_density_ridges(alpha = .7, scale = 1.7) +
-  labs(x = "Average Strategy Use (Mean-Centered)",
-       y = "Interpersonal Strategy",
-       title = "Distributions of Parents' Use of Interpersonal Strategies") +
+  labs(x = "Average Strategy Use",
+       y = "Intrapersonal Strategy",
+       title = "Distributions of Adolescents' Use of Intrapersonal Strategies") +
   scale_x_continuous(expand = c(0.01, 0)) +
   theme(legend.position = "none") +
   scale_fill_brewer(palette="Set2") +
@@ -490,7 +490,7 @@ df %>%
     "par_inter_suppression_avg"     = "Suppression"
   ), expand = c(0.01, 0)) +
   geom_density_ridges(alpha = .7, scale = 1.7) +
-  labs(x = "Average Strategy Use (Mean-Centered)",
+  labs(x = "Average Strategy Use",
        y = "Interpersonal Strategy",
        title = "Distributions of Parents' Use of Interpersonal Strategies") +
   scale_x_continuous(expand = c(0.01, 0)) +
@@ -514,9 +514,9 @@ df %>%
     "par_intra_suppression_avg"     = "Suppression"
   ), expand = c(0.01, 0)) +
   geom_density_ridges(alpha = .7, scale = 1.7) +
-  labs(x = "Average Strategy Use (Mean-Centered)",
-       y = "Interpersonal Strategy",
-       title = "Distributions of Parents' Use of Interpersonal Strategies") +
+  labs(x = "Average Strategy Use",
+       y = "Intrapersonal Strategy",
+       title = "Distributions of Parents' Use of Intrapersonal Strategies") +
   scale_x_continuous(expand = c(0.01, 0)) +
   theme(legend.position = "none") +
   scale_fill_brewer(palette="Set2") +
