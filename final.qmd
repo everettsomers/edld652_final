@@ -3,17 +3,17 @@ title: "final"
 author: "Everett Mahaffy"
 format:
   html:
+    code-fold: true
     toc: true
     embed-resources: true
     highlight-style: cyan
 execute:
   eval: true
-  echo: false
+  echo: true
 warning: false
 message: false
 ---
 
-# Packages
 ```{r}
 library(tidyverse)
 library(dplyr)
@@ -23,7 +23,6 @@ library(modelsummary)
 library(ggridges)
 ```
 
-# Read in data
 ```{r}
 df <- read.csv("dyad_mean_data_all.csv")
 ```
@@ -34,6 +33,7 @@ df <- read.csv("dyad_mean_data_all.csv")
 
 ### models
 ```{r}
+#| output: false
 ## PROBLEM SOLVING
 rq1a_problem_solving <- lm(
   ad_inter_problem_solving_avg ~ par_inter_problem_solving_avg +
@@ -86,6 +86,7 @@ summary(rq1a_suppression)
 ### summary and fdr
 
 ```{r}
+#| output: false
 modelsummary(
   list(
     "problem solving" = rq1a_problem_solving,
@@ -191,6 +192,7 @@ print(rq1a_tests)
 ### models
 
 ```{r}
+#| output: false
 ## RQ2a: Intra-personal ER strategy use similarity across the daily diary period
 
 ## PROBLEM SOLVING
@@ -245,6 +247,8 @@ summary(rq2a_suppression)
 ### summary and fdr
 
 ```{r}
+#| output: false
+
 modelsummary(
   list(
     "problem solving" = rq2a_problem_solving,
@@ -298,6 +302,8 @@ print(rq2a_tests)
 ### models
 
 ```{r}
+#| output: false
+
 ## RQ3a: Parent interpersonal ER predicts adolescent intrapersonal ER (analogous)
 
 ## PROBLEM SOLVING
@@ -353,6 +359,7 @@ summary(rq3a_suppression)
 ### summary and fdr
 
 ```{r}
+#| output: false
 modelsummary(
   list(
     "problem solving" = rq3a_problem_solving,
@@ -411,7 +418,7 @@ print(rq3a_tests)
   viz1theme <- function(base_family = "Avenir") {
     theme_classic(base_family = base_family) +
       theme(
-        plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+        plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
         axis.title = element_text(size = 12, face = "bold"),
         axis.text = element_text(size = 10),
         plot.background = element_rect(fill = "white", color = NA),
@@ -434,7 +441,7 @@ df %>%
     "ad_inter_distraction_avg"     = "Distraction",
     "ad_inter_suppression_avg"     = "Suppression"
   ), expand = c(0.01, 0)) +
-  geom_density_ridges(alpha = .7, scale = 1.2) +
+  geom_density_ridges(alpha = .7, scale = 1.7) +
   labs(x = "Average Strategy Use (Mean-Centered)",
        y = "Interpersonal Strategy",
        title = "Distributions of Parents' Use of Interpersonal Strategies") +
@@ -458,7 +465,7 @@ df %>%
     "ad_intra_distraction_avg"     = "Distraction",
     "ad_intra_suppression_avg"     = "Suppression"
   ), expand = c(0.01, 0)) +
-  geom_density_ridges(alpha = .7, scale = 1.2) +
+  geom_density_ridges(alpha = .7, scale = 1.7) +
   labs(x = "Average Strategy Use (Mean-Centered)",
        y = "Interpersonal Strategy",
        title = "Distributions of Parents' Use of Interpersonal Strategies") +
@@ -482,7 +489,7 @@ df %>%
     "par_inter_distraction_avg"     = "Distraction",
     "par_inter_suppression_avg"     = "Suppression"
   ), expand = c(0.01, 0)) +
-  geom_density_ridges(alpha = .7, scale = 1.2) +
+  geom_density_ridges(alpha = .7, scale = 1.7) +
   labs(x = "Average Strategy Use (Mean-Centered)",
        y = "Interpersonal Strategy",
        title = "Distributions of Parents' Use of Interpersonal Strategies") +
@@ -506,7 +513,7 @@ df %>%
     "par_intra_distraction_avg"     = "Distraction",
     "par_intra_suppression_avg"     = "Suppression"
   ), expand = c(0.01, 0)) +
-  geom_density_ridges(alpha = .7, scale = 1.2) +
+  geom_density_ridges(alpha = .7, scale = 1.7) +
   labs(x = "Average Strategy Use (Mean-Centered)",
        y = "Interpersonal Strategy",
        title = "Distributions of Parents' Use of Interpersonal Strategies") +
@@ -644,7 +651,7 @@ ggplot(df3,
   geom_col(data=filter(df3, label %in% c("Corumination")), fill="deepskyblue3") +
   geom_text(aes(label = paste0(round(beta, 3), ifelse(label %in% c("Corumination"), "*", ""))), hjust = 1.5, size = 6) +
    labs(
-    title = "Association between Parents' Interpersonal ER and Adolescents' Use of Analagous Intrapersonal Strategies",
+    title = "Parents' Use of Interpersonal Strategies and Adolescents' use of Analagous Intrapersonal Strategies",
     x = "Beta",
     y = "Interpersonal ER Strategy",
     caption = expression("* " * italic(p) * " < .05")
@@ -658,7 +665,7 @@ ggplot(df3,
 
 ```{r}
 # Unfortunately no moderations were significant, so I will present the significant linear models for each rq instead
-ggplot(df, aes(x = par_inter_corumination_avg, y = ad_inter_corumination_avg)) +
+a <- ggplot(df, aes(x = par_inter_corumination_avg, y = ad_inter_corumination_avg)) +
   geom_point(color = "gray30", alpha = .8) +
   geom_smooth(method = "lm", se = TRUE, color = "deepskyblue4") +
   labs(
@@ -670,7 +677,7 @@ ggplot(df, aes(x = par_inter_corumination_avg, y = ad_inter_corumination_avg)) +
   scale_y_continuous(expand = c(0.01, 0)) +
   viz1theme()
 
-ggplot(df, aes(x = par_inter_distraction_avg, y = ad_inter_distraction_avg)) +
+b <- ggplot(df, aes(x = par_inter_distraction_avg, y = ad_inter_distraction_avg)) +
   geom_point(color = "gray30", alpha = .8) +
   geom_smooth(method = "lm", se = TRUE, color = "deepskyblue4") +
   labs(
@@ -683,7 +690,7 @@ ggplot(df, aes(x = par_inter_distraction_avg, y = ad_inter_distraction_avg)) +
   viz1theme()
 
 
-ggplot(df, aes(x = par_inter_suppression_avg, y = ad_inter_suppression_avg)) +
+c <- ggplot(df, aes(x = par_inter_suppression_avg, y = ad_inter_suppression_avg)) +
   geom_point(color = "gray30", alpha = .8) +
   geom_smooth(method = "lm", se = TRUE, color = "deepskyblue4") +
   labs(
@@ -695,13 +702,16 @@ ggplot(df, aes(x = par_inter_suppression_avg, y = ad_inter_suppression_avg)) +
   scale_y_continuous(expand = c(0.01, 0)) +
   viz1theme()
 
+library(patchwork)
+(a + b + c) + plot_annotation(title = 'Parent-Adolescent Interpersonal ER Strategy Use Correspondence', theme = theme(plot.title = element_text(size = 16, family = "Avenir", hjust = 0.5)))
+
 ggplot(df, aes(x = par_inter_corumination_avg, y = ad_intra_rumination_avg)) +
   geom_point(color = "gray30", alpha = .8) +
   geom_smooth(method = "lm", se = TRUE, color = "deepskyblue4") +
   labs(
     x = "Parent Interpersonal Corumination",
     y = "Adolescent Intrapersonal Rumination",
-   title = "Association between Parents' use of Corumination and Adolescents' Use of Intrapersonal Rumination"
+   title = "Association between Parents' Use of Corumination and Adolescents' Use of Intrapersonal Rumination"
   ) +
   scale_x_continuous(expand = c(0.01, 0)) +
   scale_y_continuous(expand = c(0.01, 0)) +
