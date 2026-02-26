@@ -651,7 +651,7 @@ ggplot(df3,
   geom_col(data=filter(df3, label %in% c("Corumination")), fill="deepskyblue3") +
   geom_text(aes(label = paste0(round(beta, 3), ifelse(label %in% c("Corumination"), "*", ""))), hjust = 1.5, size = 6) +
    labs(
-    title = "Parents' Use of Interpersonal Strategies and Adolescents' use of Analagous Intrapersonal Strategies",
+    title = "Parents' Use of Interpersonal Strategies and \nAdolescents' use of Analagous Intrapersonal Strategies",
     x = "Beta",
     y = "Interpersonal ER Strategy",
     caption = expression("* " * italic(p) * " < .05")
@@ -711,7 +711,7 @@ ggplot(df, aes(x = par_inter_corumination_avg, y = ad_intra_rumination_avg)) +
   labs(
     x = "Parent Interpersonal Corumination",
     y = "Adolescent Intrapersonal Rumination",
-   title = "Association between Parents' Use of Corumination and Adolescents' Use of Intrapersonal Rumination"
+   title = "Association between Parents' Use of Corumination \nand Adolescents' Use of Intrapersonal Rumination"
   ) +
   scale_x_continuous(expand = c(0.01, 0)) +
   scale_y_continuous(expand = c(0.01, 0)) +
