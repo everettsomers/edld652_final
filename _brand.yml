@@ -1,0 +1,16 @@
+color:
+  palette:
+    primary: "#1d6082"
+    foreground: "#FFFFFF"
+    background: "#3f7399"
+   
+typography:
+  base:
+    family: "Avenir"
+  headings:
+    family: "Avenir"
+    color: "#FFFFFF"
+    weight: 600
+
+logo:
+  medium: logo.png

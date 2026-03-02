@@ -3,7 +3,5 @@
 .RData
 .Ruserdata
 .secrets
-.dyad_mean_data_all.csv
 dyad_mean_data_all.csv
-
 dyad_mean_data_all2.csv
