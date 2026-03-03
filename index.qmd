@@ -403,14 +403,17 @@ print(rq3a_tests)
 
 # Welcome
 
-Welcome to my data dashboard! This page displays visualizations for an ongoing project which aims to quantify within-dyad associations in **interpersonal emotion regulation** (i.e., strategies used to regulate others' emotions) and **intrapersonal emotion regulation** (i.e., strategies used to regulate one's own emotions). One-hundred-twelve adolescents (M_age = 14.1 years) participated in a **daily diary study** for 28 days. Each evening, they reported on their current emotions, their partner's peak emotions, and the intrapersonal and interpersonal strategies they used. The visualizations presented here aim to **1)** display the overall distributions of parents' and adolescents' use of inter/intrapersonal strategies, and **2)** compare the relatively magnitude of the associations between parents use of strategies and adolescents use of the same strategies. Research questions are therefore as follows:
+Welcome to my data dashboard! This page displays visualizations for an ongoing project which aims to quantify within-dyad associations in **interpersonal emotion regulation** (i.e., strategies used to regulate others' emotions) and **intrapersonal emotion regulation** (i.e., strategies used to regulate one's own emotions). One-hundred-twelve adolescents (M_age = 14.1 years) participated in a **daily diary study** for 28 days. Each evening, they reported on their current emotions, their partner's peak emotions, and the intrapersonal and interpersonal strategies they used. This study focuses in particular on six strategies which have analagous interpersonal and intrapersonal forms: reappraisal, suppression, (co)rumination, acceptance, distraction, and problem solving.
+
+![](method.png){width="50%"}
+
+The visualizations presented here aim to **1)** display the overall distributions of parents' and adolescents' use of inter/intrapersonal strategies, and **2)** compare the relatively magnitude of the associations between parents use of strategies and adolescents use of the same strategies. Research questions are therefore as follows:
 
 • *RQ1*: Are parents’ and adolescents’ use of intrapersonal ER strategies associated at the individual strategy level? 
 
 • *RQ2*: Are parents’ and adolescents’ use of interpersonal ER strategies associated at the individual strategy level? 
 
 • *RQ3*: Are parents’ use of interpersonal ER strategies associated with adolescents’ use of the analogous intrapersonal strategies? 
-
 
 # Strategy Use
 ::: {.panel-tabset}
@@ -590,7 +593,30 @@ df3 <- data.frame(
 ## RQ1
 
 ```{r}
-rq1chart <- ggplot(df1,
+rq1chart <- ggplot(df2,
+       aes(x = beta,
+           y = reorder(label, abs(beta)))) +
+  geom_col(fill="gray80") +
+  geom_text(aes(label = paste0(round(beta, 3))), hjust = 1.5, size = 6) +
+   labs(
+    title = "Parent-Adolescent Intrapersonal ER Strategy Use Correspondence",
+    x = "Beta",
+    y = "Intrapersonal ER Strategy",
+    caption = expression("* " * italic(p) * " < .05")
+  ) +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  scale_y_discrete(expand = c(0.01, 0)) +
+  viz1theme()
+
+print(rq1chart)
+
+
+```
+
+## RQ2
+
+```{r}
+rq2chart <- ggplot(df1,
        aes(x = beta,
            y = reorder(label, abs(beta)))) +
   geom_col(fill="gray80") +
@@ -600,28 +626,6 @@ rq1chart <- ggplot(df1,
     title = "Parent-Adolescent Interpersonal ER Strategy Use Correspondence",
     x = "Beta",
     y = "Interpersonal ER Strategy",
-    caption = expression("* " * italic(p) * " < .05")
-  ) +
-  scale_x_continuous(expand = c(0.01, 0)) +
-  scale_y_discrete(expand = c(0.01, 0)) +
-  viz1theme()
-
-print(rq1chart)
-
-```
-
-## RQ2
-
-```{r}
-rq2chart <- ggplot(df2,
-       aes(x = beta,
-           y = reorder(label, abs(beta)))) +
-  geom_col(fill="gray80") +
-  geom_text(aes(label = paste0(round(beta, 3))), hjust = 1.5, size = 6) +
-   labs(
-    title = "Parent-Adolescent Intrapersonal ER Strategy Use Correspondence",
-    x = "Beta",
-    y = "Intrapersonal ER Strategy",
     caption = expression("* " * italic(p) * " < .05")
   ) +
   scale_x_continuous(expand = c(0.01, 0)) +
