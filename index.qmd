@@ -416,8 +416,10 @@ The visualizations presented here aim to **1)** display the overall distribution
 • *RQ3*: Are parents’ use of interpersonal ER strategies associated with adolescents’ use of the analogous intrapersonal strategies? 
 
 # Strategy Use
-::: {.panel-tabset}
 
+This page displays distributions for adolescents' use of each interpersonal and intrapersonal ER strategy.
+
+::: {.panel-tabset}
 ## Interpersonal ER 
 
 ```{r}
@@ -588,6 +590,8 @@ df3 <- data.frame(
 
 # Regression Results: Coefficients
 
+This page compares the magnitude of the coefficients, with significant associations (p < .05 after correcting for multiple comparisons) highlighted in blue.
+
 ::: {.panel-tabset}
 
 ## RQ1
@@ -661,6 +665,8 @@ print(rq3chart)
 :::
 
 # Regression Results: Plots
+
+This page displays the linear relations between parents' and adolescents' ER strategy use for associations that were signficant. 
 
 ::: {.panel-tabset}
 
