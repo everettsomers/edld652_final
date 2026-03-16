@@ -486,7 +486,7 @@ Welcome to my data dashboard! This page displays visualizations for an ongoing p
 
 **Data Description**
 
-Each evening, adolescents and their parents completed a **daily diary** reporting on their current emotions, their partner's peak emotions, and the intrapersonal and interpersonal strategies they used. This study focuses in particular on six strategies which have *analagous interpersonal and intrapersonal forms:* **reappraisal, suppression, (co)rumination, acceptance, distraction,** and **problem solving** (see sidebar for detail).
+Each evening, adolescents and their parents completed a **daily diary** reporting on their current emotions, their partner's peak emotions, and the intrapersonal and interpersonal strategies they used. This study focuses in particular on six strategies which have *analogous interpersonal and intrapersonal forms:* **reappraisal, suppression, (co)rumination, acceptance, distraction,** and **problem solving** (see sidebar for detail).
 
 
 
@@ -554,7 +554,7 @@ par_intra <- df %>%
   viz1theme() + 
   scale_fill_brewer(palette="Set2") +
   theme(legend.position = "none",    axis.title.x = element_text(
-      hjust = -.3, vjust = -1,margin = margin(t = 10)))
+      hjust = 0, vjust = -1,margin = margin(t = 10)))
 
 
 (par_intra + ad_intra) + plot_annotation(title="Parents and adolescents both use a variety of strategies\nto regulate their own's emotions", subtitle="Parents use slightly more reappraisal, problem solving, and acceptance", theme=theme(plot.title = element_text(family = "Avenir", face = "bold", size = 18, hjust = 0.5), plot.subtitle = element_text(family = "Avenir", face = "italic", size = 16, hjust = 0.5)))
@@ -611,7 +611,7 @@ par_inter <- df %>%
   scale_fill_brewer(palette="Set2") +
   viz1theme() +
   theme(legend.position = "none",    axis.title.x = element_text(
-      hjust = -.3, vjust = -1,margin = margin(t = 10)))
+      hjust = 0, vjust = -1,margin = margin(t = 10)))
 
 
 (par_inter + ad_inter) + plot_annotation(title="Parents and adolescents both use a variety of strategies\nto regulate one another's emotions", subtitle="Parents use more interpersonal emotion regulation overall", theme=theme(plot.title = element_text(family = "Avenir", face = "bold", size = 18, hjust = 0.5), plot.subtitle = element_text(family = "Avenir", face = "italic", size = 16, hjust = 0.5)))
@@ -841,7 +841,7 @@ ggplot(tidy_rq1, aes(x = estimate, y = reorder(strategy_clean, estimate))) +
                 color = "#4375D3",
                 width = 0.2,
                 size = 1.6) + # 80% CI
-  geom_point(size = 1) +
+  geom_point(size = 3) +
   labs(title = "Parents' and Adolescents' Use of Interpersonal Suppression, \nDistraction, and Corumination was Positively Associated \nacross the Daily Diary Period",
     x = "Coefficient",
     y = "Interpersonal ER Strategy",
@@ -882,7 +882,7 @@ ggplot(tidy_rq3, aes(x = estimate, y = reorder(strategy_clean, estimate))) +
                 color = "#4375D3",
                 width = 0.2,
                 size = 1.6) + # 80% CI
-  geom_point(size = 1) +
+  geom_point(size = 3) +
   labs(title = "Parents' use of Corumination was Associated with Adolescents'\nUse of Intrapersonal Rumination Across the Daily Diary Period",
     x = "Coefficient",
     y = "Parents' Interpersonal ER Strategy",
