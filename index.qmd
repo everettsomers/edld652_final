@@ -721,7 +721,7 @@ rq2chart <- ggplot(df1,
   geom_col(data=filter(df1, label %in% c("Corumination","Distraction","Suppression")), fill="deepskyblue3") +
   geom_text(aes(label = paste0(round(beta, 3), ifelse(label %in% c("Corumination","Distraction","Suppression"), "*", ""))), hjust = 1.2, size = 6) +
    labs(
-    title = "Parents' and Adolescents' Use of Interpersonal Suppression, \nDistraction, and Corumination was Positively Associated \nacross the Daily Diary Period",
+    title = "Parents' and Adolescents' Use of Interpersonal Suppression, \nDistraction, and Corumination was Positively Associated",
     x = "Beta",
     y = "Interpersonal ER Strategy",
     caption = expression("* " * italic(p) * " < .05")
@@ -746,7 +746,7 @@ rq3chart <- ggplot(df3,
   geom_col(data=filter(df3, label %in% c("Corumination")), fill="deepskyblue3") +
   geom_text(aes(label = paste0(round(beta, 3), ifelse(label %in% c("Corumination"), "*", ""))), hjust = 1.5, size = 6) +
    labs(
-     title = "Parents' use of Corumination was Associated with Adolescents' \nUse of Intrapersonal Rumination Across the Daily Diary Period",
+     title = "Parents' use of Corumination was Associated with Adolescents' \nUse of Intrapersonal Rumination",
     x = "Beta",
     y = "Interpersonal ER Strategy",
     caption = expression("* " * italic(p) * " < .05")
@@ -800,7 +800,7 @@ ggplot(tidy_rq2, aes(x = estimate, y = reorder(strategy_clean, estimate))) +
                 width = 0.2,
                 size = 1.6) + # 80% CI
   geom_point(size = 3) +
-  labs(title = "Parents' and Adolescents' Use of Intrapersonal Strategies \nwas not Associated after \nCorrection for Multiple Comparisons",
+  labs(title = "Parents' and Adolescents' Use of Intrapersonal Strategies \nwas not Associated",
     x = "Coefficient",
     y = "Intrapersonal ER Strategy",
     caption = "Standard error bars indicate 95%, 90%, and 80% confidence intervals.") +
@@ -842,7 +842,7 @@ ggplot(tidy_rq1, aes(x = estimate, y = reorder(strategy_clean, estimate))) +
                 width = 0.2,
                 size = 1.6) + # 80% CI
   geom_point(size = 3) +
-  labs(title = "Parents' and Adolescents' Use of Interpersonal Suppression, \nDistraction, and Corumination was Positively Associated \nacross the Daily Diary Period",
+  labs(title = "Parents' and Adolescents' Use of Interpersonal Suppression, \nDistraction, and Corumination was Positively Associated",
     x = "Coefficient",
     y = "Interpersonal ER Strategy",
     caption = "Standard error bars indicate 95%, 90%, and 80% confidence intervals.") +
@@ -883,7 +883,7 @@ ggplot(tidy_rq3, aes(x = estimate, y = reorder(strategy_clean, estimate))) +
                 width = 0.2,
                 size = 1.6) + # 80% CI
   geom_point(size = 3) +
-  labs(title = "Parents' use of Corumination was Associated with Adolescents'\nUse of Intrapersonal Rumination Across the Daily Diary Period",
+  labs(title = "Parents' use of Corumination was Associated with Adolescents'\nUse of Intrapersonal Rumination",
     x = "Coefficient",
     y = "Parents' Interpersonal ER Strategy",
     caption = "Standard error bars indicate 95%, 90%, and 80% confidence intervals.") +
