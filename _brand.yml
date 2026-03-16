@@ -7,6 +7,7 @@ color:
 typography:
   base:
     family: "Avenir"
+    size: 20px
   headings:
     family: "Avenir"
     color: "#FFFFFF"

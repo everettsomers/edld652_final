@@ -3,8 +3,9 @@ title: "Emotion Regulation in Parent-Adolescent Dyads"
 author: "by Everett Mahaffy"
 format: 
   dashboard:
-    theme: 
-      sandstone
+    theme: sandstone
+    scrolling: true
+
 ---
 
 ```{r}
@@ -15,6 +16,8 @@ library(RColorBrewer)
 library(modelsummary)
 library(ggridges)
 library(patchwork)
+library(colorspace)
+library(broom)
 ```
 
 ```{r}
@@ -391,9 +394,9 @@ print(rq3a_tests)
   viz1theme <- function(base_family = "Avenir") {
     theme_classic(base_family = base_family) +
       theme(
-        plot.title = element_text(size = 14, face = "bold", hjust = 0.5),
-        axis.title = element_text(size = 12, face = "bold"),
-        axis.text = element_text(size = 10),
+        plot.title = element_text(size = 16.5, face = "bold", hjust = 0.5),
+        axis.title = element_text(size = 14.5, face = "bold"),
+        axis.text = element_text(size = 12),
         plot.background = element_rect(fill = "white", color = NA),
         legend.position = "none"                          
       )
@@ -401,79 +404,105 @@ print(rq3a_tests)
 
 ```
 
+# {.sidebar}
+![](method1.png)
+
+Strategies and example items are as follows:
+
+**Reappraisal**
+<details>
+
+  **Definition**: reframing an situation to alter its emotional impact
+  
+  • **Interpersonal:** *I helped my child/parent think of the situation in a positive light.*
+  
+  • **Intrapersonal:** *I tried to think of the problem in a different way so it didn't seem as bad.*
+
+</details>
+
+**Suppression**
+<details>
+
+  **Definition**: repressing the outward expression of an emotion
+
+  • **Intrapersonal:** *I controlled my feelings by not showing them.*
+  
+  • **Interpersonal:** *I helped my child/parent try to hide their feelings from others*
+</details>
+
+  
+**(Co)rumination**
+<details>
+
+  **Definition**: verbally or internally revisiting an emotion-eliciting event
+
+  • **Intrapersonal:** *I thought, "I'm ruining everything."*
+  
+  • **Interpersonal:** *I helped my child/parent replay the experience of negative feelings again and again in their mind*
+</details>
+
+  
+**Acceptance**
+<details>
+
+  **Definition**: acknowledging and feeling the emotion without judgment
+
+  • **Intrapersonal:** *I accepted my feelings without trying to change them.*
+  
+  • Interpersonal: *I helped my child/parent accept their negative feelings.*
+</details>
+
+**Distraction**
+<details>
+
+  **Definition**: engaging in an enjoyable activity 
+  
+  • **Intrapersonal:** *I did something I enjoy.*
+  
+  • **Interpersonal:** *I helped my child/parent find ways to distract themselves from their negative feelings*
+</details>
+
+**Problem solving** 
+<details>
+
+  **Definition**: coming up with a solution to the problem underlying an emotion
+
+  • **Intrapersonal:** *I thought of a way to make my problem better.*
+  
+  • **Interpersonal:** *I helped my child/parent think of solutions to their problems.*
+</details>
+
+
 # Welcome
 
-Welcome to my data dashboard! This page displays visualizations for an ongoing project which aims to quantify within-dyad associations in **interpersonal emotion regulation** (i.e., strategies used to regulate others' emotions) and **intrapersonal emotion regulation** (i.e., strategies used to regulate one's own emotions). One-hundred-twelve adolescents (M_age = 14.1 years) participated in a **daily diary study** for 28 days. Each evening, they reported on their current emotions, their partner's peak emotions, and the intrapersonal and interpersonal strategies they used. This study focuses in particular on six strategies which have analagous interpersonal and intrapersonal forms: reappraisal, suppression, (co)rumination, acceptance, distraction, and problem solving.
+Welcome to my data dashboard! This page displays visualizations for an ongoing project which aims to quantify within-dyad associations in **interpersonal emotion regulation** (i.e., strategies used to regulate others' emotions) and **intrapersonal emotion regulation** (i.e., strategies used to regulate one's own emotions). 
 
-![](method.png){width="50%"}
+## Row
 
-The visualizations presented here aim to **1)** display the overall distributions of parents' and adolescents' use of inter/intrapersonal strategies, and **2)** compare the relatively magnitude of the associations between parents use of strategies and adolescents use of the same strategies. Research questions are therefore as follows:
+### Column
 
-• *RQ1*: Are parents’ and adolescents’ use of intrapersonal ER strategies associated at the individual strategy level? 
 
-• *RQ2*: Are parents’ and adolescents’ use of interpersonal ER strategies associated at the individual strategy level? 
+![](method.png){position="center"}
 
-• *RQ3*: Are parents’ use of interpersonal ER strategies associated with adolescents’ use of the analogous intrapersonal strategies? 
+**Data Description**
 
-# Strategy Use
+Each evening, adolescents and their parents completed a **daily diary** reporting on their current emotions, their partner's peak emotions, and the intrapersonal and interpersonal strategies they used. This study focuses in particular on six strategies which have *analagous interpersonal and intrapersonal forms:* **reappraisal, suppression, (co)rumination, acceptance, distraction,** and **problem solving** (see sidebar for detail).
 
-This page displays distributions for adolescents' use of each interpersonal and intrapersonal ER strategy.
+
+
+### Column
+
+**Research Questions**
+
+• *RQ1*: Are parents’ and adolescents’ use of *intrapersonal* ER strategies associated at the individual strategy level? 
+
+• *RQ2*: Are parents’ and adolescents’ use of *interpersonal* ER strategies associated at the individual strategy level? 
+
+• *RQ3*: Are parents’ use of interpersonal ER strategies associated with adolescents’ use of the analogous intrapersonal strategies (*modeling*)? 
+
+# Strategy Use: Distributions of Individual's Average Strategy Use
 
 ::: {.panel-tabset}
-## Interpersonal ER 
-
-```{r}
-ad_inter <- df %>%
-  pivot_longer(
-    cols = starts_with("ad_inter_"),
-    names_to = "strategy",
-    values_to = "value"
-  ) %>%
-  ggplot(aes(x = value, y = strategy, fill=strategy)) +
-  scale_y_discrete(labels = c(
-    "ad_inter_problem_solving_avg" = "Problem Solving",
-    "ad_inter_corumination_avg"    = "Corumination",
-    "ad_inter_reappraisal_avg"     = "Reappraisal",
-    "ad_inter_acceptance_avg"      = "Acceptance",
-    "ad_inter_distraction_avg"     = "Distraction",
-    "ad_inter_suppression_avg"     = "Suppression"
-  ), expand = c(0.01, 0)) +
-  geom_density_ridges(alpha = .7, scale = 1.7) +
-  labs(x = "Average Strategy Use",
-       y = "Interpersonal Strategy",
-       title = "Adolescent") +
-  scale_x_continuous(expand = c(0.01, 0)) +
-  theme(legend.position = "none") +
-  scale_fill_brewer(palette="Set2") +
-  viz1theme()
-
-par_inter <- df %>%
-  pivot_longer(
-    cols = starts_with("par_inter_"),
-    names_to = "strategy",
-    values_to = "value"
-  ) %>%
-  ggplot(aes(x = value, y = strategy, fill=strategy)) +
-     scale_y_discrete(labels = c(
-    "par_inter_problem_solving_avg" = "Problem Solving",
-    "par_inter_corumination_avg"    = "Corumination",
-    "par_inter_reappraisal_avg"     = "Reappraisal",
-    "par_inter_acceptance_avg"      = "Acceptance",
-    "par_inter_distraction_avg"     = "Distraction",
-    "par_inter_suppression_avg"     = "Suppression"
-  ), expand = c(0.01, 0)) +
-  geom_density_ridges(alpha = .7, scale = 1.7) +
-  labs(x = "Average Strategy Use",
-       y = "Interpersonal Strategy",
-       title = "Parent") +
-  scale_x_continuous(expand = c(0.01, 0)) +
-  theme(legend.position = "none") +
-  scale_fill_brewer(palette="Set2") +
-  viz1theme()
-
-par_inter + ad_inter
-```
-
 ## Intrapersonal ER 
 ```{r}
 ad_intra <- df %>%
@@ -496,9 +525,11 @@ ad_intra <- df %>%
        y = "Intrapersonal Strategy",
        title = "Adolescent") +
   scale_x_continuous(expand = c(0.01, 0)) +
-  theme(legend.position = "none") +
-  scale_fill_brewer(palette="Set2") +
-  viz1theme()
+  viz1theme() +
+  theme(legend.position = "none", axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(), axis.title.x = element_blank()) +
+  scale_fill_brewer(palette="Set2")
 
 par_intra <- df %>%
   pivot_longer(
@@ -516,17 +547,79 @@ par_intra <- df %>%
     "par_intra_suppression_avg"     = "Suppression"
   ), expand = c(0.01, 0)) +
   geom_density_ridges(alpha = .7, scale = 1.7) +
-  labs(x = "Average Strategy Use",
+  labs(x = "Individuals' Average Strategy Use across the Daily Diary Period",
        y = "Intrapersonal Strategy",
        title = "Parent") +
   scale_x_continuous(expand = c(0.01, 0)) +
-  theme(legend.position = "none") +
+  viz1theme() + 
   scale_fill_brewer(palette="Set2") +
-  viz1theme()
+  theme(legend.position = "none",    axis.title.x = element_text(
+      hjust = -.3, vjust = -1,margin = margin(t = 10)))
 
-par_intra + ad_intra
+
+(par_intra + ad_intra) + plot_annotation(title="Parents and adolescents both use a variety of strategies\nto regulate their own's emotions", subtitle="Parents use slightly more reappraisal, problem solving, and acceptance", theme=theme(plot.title = element_text(family = "Avenir", face = "bold", size = 18, hjust = 0.5), plot.subtitle = element_text(family = "Avenir", face = "italic", size = 16, hjust = 0.5)))
+```
+## Interpersonal ER 
+
+```{r}
+ad_inter <- df %>%
+  pivot_longer(
+    cols = starts_with("ad_inter_"),
+    names_to = "strategy",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = value, y = strategy, fill=strategy)) +
+  scale_y_discrete(labels = c(
+    "ad_inter_problem_solving_avg" = "Problem Solving",
+    "ad_inter_corumination_avg"    = "Corumination",
+    "ad_inter_reappraisal_avg"     = "Reappraisal",
+    "ad_inter_acceptance_avg"      = "Acceptance",
+    "ad_inter_distraction_avg"     = "Distraction",
+    "ad_inter_suppression_avg"     = "Suppression"
+  ), expand = c(0.01, 0)) +
+  geom_density_ridges(alpha = .7, scale = 1.7) +
+  labs(x = "Individuals' Average Strategy Use across the Daily Diary Period",
+       y = "Interpersonal Strategy",
+       title = "Adolescent") +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  viz1theme() +
+  theme(legend.position = "none", axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(), axis.title.x = element_blank()) +
+  scale_fill_brewer(palette="Set2") 
+
+par_inter <- df %>%
+  pivot_longer(
+    cols = starts_with("par_inter_"),
+    names_to = "strategy",
+    values_to = "value"
+  ) %>%
+  ggplot(aes(x = value, y = strategy, fill=strategy)) +
+     scale_y_discrete(labels = c(
+    "par_inter_problem_solving_avg" = "Problem Solving",
+    "par_inter_corumination_avg"    = "Corumination",
+    "par_inter_reappraisal_avg"     = "Reappraisal",
+    "par_inter_acceptance_avg"      = "Acceptance",
+    "par_inter_distraction_avg"     = "Distraction",
+    "par_inter_suppression_avg"     = "Suppression"
+  ), expand = c(0.01, 0)) +
+  geom_density_ridges(alpha = .7, scale = 1.7) +
+  labs(x = "Individuals' Average Strategy Use across the Daily Diary Period",
+       y = "Interpersonal Strategy",
+       title = "Parent") +
+  scale_x_continuous(expand = c(0.01, 0)) +
+  scale_fill_brewer(palette="Set2") +
+  viz1theme() +
+  theme(legend.position = "none",    axis.title.x = element_text(
+      hjust = -.3, vjust = -1,margin = margin(t = 10)))
+
+
+(par_inter + ad_inter) + plot_annotation(title="Parents and adolescents both use a variety of strategies\nto regulate one another's emotions", subtitle="Parents use more interpersonal emotion regulation overall", theme=theme(plot.title = element_text(family = "Avenir", face = "bold", size = 18, hjust = 0.5), plot.subtitle = element_text(family = "Avenir", face = "italic", size = 16, hjust = 0.5)))
 ```
 :::
+
+This page displays distributions for parents' and adolescents' use of each interpersonal and intrapersonal ER strategy. Overall, parents and adolescents report using a variety of strategies, with parents appearing to use more interpersonal strategies than adolescents.
+
 
 ```{r}
 names1 <- c(
@@ -588,13 +681,13 @@ df3 <- data.frame(
 )
 ```
 
-# Regression Results: Coefficients
+# Regression Results: Highlighting Significance
 
 This page compares the magnitude of the coefficients, with significant associations (p < .05 after correcting for multiple comparisons) highlighted in blue.
 
 ::: {.panel-tabset}
 
-## RQ1
+## RQ1: Intrapersonal Correspondence
 
 ```{r}
 rq1chart <- ggplot(df2,
@@ -602,8 +695,7 @@ rq1chart <- ggplot(df2,
            y = reorder(label, abs(beta)))) +
   geom_col(fill="gray80") +
   geom_text(aes(label = paste0(round(beta, 3))), hjust = 1.5, size = 6) +
-   labs(
-    title = "Parent-Adolescent Intrapersonal ER Strategy Use Correspondence",
+   labs(title = "Parents' and Adolescents' Intrapersonal Strategy Use is Not \nAssociated Across the Daily Diary Period",
     x = "Beta",
     y = "Intrapersonal ER Strategy",
     caption = expression("* " * italic(p) * " < .05")
@@ -617,7 +709,9 @@ print(rq1chart)
 
 ```
 
-## RQ2
+Across six strategies, parents' and adolescents' intrapersonal emotion regulation strategy use was *not* associated across the daily diary period.
+
+## RQ2: Interpersonal Correspondence
 
 ```{r}
 rq2chart <- ggplot(df1,
@@ -625,9 +719,9 @@ rq2chart <- ggplot(df1,
            y = reorder(label, abs(beta)))) +
   geom_col(fill="gray80") +
   geom_col(data=filter(df1, label %in% c("Corumination","Distraction","Suppression")), fill="deepskyblue3") +
-  geom_text(aes(label = paste0(round(beta, 3), ifelse(label %in% c("Corumination","Distraction","Suppression"), "*", ""))), hjust = 1.5, size = 6) +
+  geom_text(aes(label = paste0(round(beta, 3), ifelse(label %in% c("Corumination","Distraction","Suppression"), "*", ""))), hjust = 1.2, size = 6) +
    labs(
-    title = "Parent-Adolescent Interpersonal ER Strategy Use Correspondence",
+    title = "Parents' and Adolescents' Use of Interpersonal Suppression, \nDistraction, and Corumination was Positively Associated \nacross the Daily Diary Period",
     x = "Beta",
     y = "Interpersonal ER Strategy",
     caption = expression("* " * italic(p) * " < .05")
@@ -640,7 +734,9 @@ print(rq2chart)
 
 ```
 
-## RQ3
+Parents' and adolscents use of interpersonal corumination, distraction, and suppression was significantly associated across the daily diary period.
+
+## RQ3: Parent Modeling
 
 ```{r}
 rq3chart <- ggplot(df3,
@@ -650,7 +746,7 @@ rq3chart <- ggplot(df3,
   geom_col(data=filter(df3, label %in% c("Corumination")), fill="deepskyblue3") +
   geom_text(aes(label = paste0(round(beta, 3), ifelse(label %in% c("Corumination"), "*", ""))), hjust = 1.5, size = 6) +
    labs(
-    title = "Parents' Use of Interpersonal Strategies and \nAdolescents' use of Analagous Intrapersonal Strategies",
+     title = "Parents' use of Corumination was Associated with Adolescents' \nUse of Intrapersonal Rumination Across the Daily Diary Period",
     x = "Beta",
     y = "Interpersonal ER Strategy",
     caption = expression("* " * italic(p) * " < .05")
@@ -662,23 +758,156 @@ rq3chart <- ggplot(df3,
 print(rq3chart)
 ```
 
+Parents' use of corumination was a significant predictor of adolescents' use of rumination across the daily diary period, pointing to the unique salience of corumination as an interpersonal emotion regulation strategy.
+
 :::
 
-# Regression Results: Plots
-
-This page displays the linear relations between parents' and adolescents' ER strategy use for associations that were signficant. 
+# Regression Results: Displaying Uncertainty
 
 ::: {.panel-tabset}
 
-## RQ1
+## RQ1: Intrapersonal Correspondence
+
+
+```{r}
+tidy_rq2 <- map2_dfr(names(rq2a_models), rq2a_preds, function(m, p) {
+  broom::tidy(rq2a_models[[m]], conf.int = TRUE) %>%
+    filter(term == p) %>%
+    mutate(strategy = m,
+           signif = p.value < 0.05)
+})
+
+tidy_rq2 <- tidy_rq2 %>%
+  mutate(strategy_clean = factor(strategy,
+  levels = c("suppression", "distraction", "rumination", "reappraisal", "problem_solving", "acceptance"),
+  labels = c("Suppression", "Distraction", "Rumination", "Reappraisal", "Problem Solving", "Acceptance")))
+
+ggplot(tidy_rq2, aes(x = estimate, y = reorder(strategy_clean, estimate))) +
+  geom_vline(xintercept = 0, color = "cornflowerblue", linetype = 2) +
+  geom_errorbar(aes(xmin = estimate + qnorm(.025)*std.error, 
+                    xmax = estimate + qnorm(.975)*std.error),
+                color = lighten("#4375D3", .6),
+                width = 0.2,
+                size = 0.8) + # 95% CI
+  geom_errorbar(aes(xmin = estimate + qnorm(.05)*std.error, 
+                    xmax = estimate + qnorm(.95)*std.error),
+                color = lighten("#4375D3", .3),
+                width = 0.2,
+                size = 1.2) + # 90% CI
+  geom_errorbar(aes(xmin = estimate + qnorm(.1)*std.error, 
+                    xmax = estimate + qnorm(.9)*std.error),
+                color = "#4375D3",
+                width = 0.2,
+                size = 1.6) + # 80% CI
+  geom_point(size = 3) +
+  labs(title = "Parents' and Adolescents' Use of Intrapersonal Strategies \nwas not Associated after \nCorrection for Multiple Comparisons",
+    x = "Coefficient",
+    y = "Intrapersonal ER Strategy",
+    caption = "Standard error bars indicate 95%, 90%, and 80% confidence intervals.") +
+  viz1theme()
+
+```
+
+
+## RQ2: Interpersonal Correspondence
+
+```{r}
+tidy_rq1 <- map2_dfr(names(rq1a_models), rq1a_preds, function(m, p) {
+  broom::tidy(rq1a_models[[m]], conf.int = TRUE) %>%
+    filter(term == p) %>%
+    mutate(strategy = m,
+           signif = p.value < 0.05)
+})
+
+tidy_rq1 <- tidy_rq1 %>%
+  mutate(strategy_clean = factor(strategy,
+  levels = c("suppression", "distraction", "corumination", "reappraisal", "problem_solving", "acceptance"),
+  labels = c("Suppression", "Distraction", "Corumination", "Reappraisal", "Problem Solving", "Acceptance")))
+
+ggplot(tidy_rq1, aes(x = estimate, y = reorder(strategy_clean, estimate))) +
+  geom_vline(xintercept = 0, color = "cornflowerblue", linetype = 2) +
+  geom_errorbar(aes(xmin = estimate + qnorm(.025)*std.error, 
+                    xmax = estimate + qnorm(.975)*std.error),
+                color = lighten("#4375D3", .6),
+                width = 0.2,
+                size = 0.8) + # 95% CI
+  geom_errorbar(aes(xmin = estimate + qnorm(.05)*std.error, 
+                    xmax = estimate + qnorm(.95)*std.error),
+                color = lighten("#4375D3", .3),
+                width = 0.2,
+                size = 1.2) + # 90% CI
+  geom_errorbar(aes(xmin = estimate + qnorm(.1)*std.error, 
+                    xmax = estimate + qnorm(.9)*std.error),
+                color = "#4375D3",
+                width = 0.2,
+                size = 1.6) + # 80% CI
+  geom_point(size = 1) +
+  labs(title = "Parents' and Adolescents' Use of Interpersonal Suppression, \nDistraction, and Corumination was Positively Associated \nacross the Daily Diary Period",
+    x = "Coefficient",
+    y = "Interpersonal ER Strategy",
+    caption = "Standard error bars indicate 95%, 90%, and 80% confidence intervals.") +
+  viz1theme()
+
+```
+
+## RQ3: Parent Modeling
+
+```{r}
+tidy_rq3 <- map2_dfr(names(rq3a_models), rq3a_preds, function(m, p) {
+  broom::tidy(rq3a_models[[m]], conf.int = TRUE) %>%
+    filter(term == p) %>%
+    mutate(strategy = m,
+           signif = p.value < 0.05)
+})
+
+tidy_rq3 <- tidy_rq3 %>%
+  mutate(strategy_clean = factor(strategy,
+  levels = c("suppression", "distraction", "corumination", "reappraisal", "problem_solving", "acceptance"),
+  labels = c("Suppression", "Distraction", "Corumination", "Reappraisal", "Problem Solving", "Acceptance")))
+
+ggplot(tidy_rq3, aes(x = estimate, y = reorder(strategy_clean, estimate))) +
+  geom_vline(xintercept = 0, color = "cornflowerblue", linetype = 2) +
+  geom_errorbar(aes(xmin = estimate + qnorm(.025)*std.error, 
+                    xmax = estimate + qnorm(.975)*std.error),
+                color = lighten("#4375D3", .6),
+                width = 0.2,
+                size = 0.8) + # 95% CI
+  geom_errorbar(aes(xmin = estimate + qnorm(.05)*std.error, 
+                    xmax = estimate + qnorm(.95)*std.error),
+                color = lighten("#4375D3", .3),
+                width = 0.2,
+                size = 1.2) + # 90% CI
+  geom_errorbar(aes(xmin = estimate + qnorm(.1)*std.error, 
+                    xmax = estimate + qnorm(.9)*std.error),
+                color = "#4375D3",
+                width = 0.2,
+                size = 1.6) + # 80% CI
+  geom_point(size = 1) +
+  labs(title = "Parents' use of Corumination was Associated with Adolescents'\nUse of Intrapersonal Rumination Across the Daily Diary Period",
+    x = "Coefficient",
+    y = "Parents' Interpersonal ER Strategy",
+    caption = "Standard error bars indicate 95%, 90%, and 80% confidence intervals.") +
+  viz1theme()
+
+```
+
+:::
+
+# Regression Results: Showing Slopes
+
+This page displays the linear relations between parents' and adolescents' ER strategy use for associations that were significant. 
+
+::: {.panel-tabset}
+
+## RQ1: Intrapersonal Correspondence
 
 ```{r}
 a <- ggplot(df, aes(x = par_inter_corumination_avg, y = ad_inter_corumination_avg)) +
   geom_point(color = "gray30", alpha = .8) +
   geom_smooth(method = "lm", se = TRUE, color = "deepskyblue4") +
   labs(
-    x = "Parent Interpersonal Corumination",
-    y = "Adolescent Interpersonal Corumination",
+    x = "Parent Corumination",
+    y = "Adolescent Corumination",
    title = "Corumination"
   ) +
   scale_x_continuous(expand = c(0.01, 0)) +
@@ -687,10 +916,10 @@ a <- ggplot(df, aes(x = par_inter_corumination_avg, y = ad_inter_corumination_av
 
 b <- ggplot(df, aes(x = par_inter_distraction_avg, y = ad_inter_distraction_avg)) +
   geom_point(color = "gray30", alpha = .8) +
-  geom_smooth(method = "lm", se = TRUE, color = "deepskyblue4") +
+  geom_smooth(method = "lm", se = TRUE, color = "#009E73") +
   labs(
-    x = "Parent Interpersonal Distraction",
-    y = "Adolescent Interpersonal Distraction",
+    x = "Parent Distraction",
+    y = "Adolescent Distraction",
     title = "Distraction"
   ) + 
   scale_x_continuous(expand = c(0.01, 0)) +
@@ -700,10 +929,10 @@ b <- ggplot(df, aes(x = par_inter_distraction_avg, y = ad_inter_distraction_avg)
 
 c <- ggplot(df, aes(x = par_inter_suppression_avg, y = ad_inter_suppression_avg)) +
   geom_point(color = "gray30", alpha = .8) +
-  geom_smooth(method = "lm", se = TRUE, color = "deepskyblue4") +
+  geom_smooth(method = "lm", se = TRUE, color = "#CC79A7") +
   labs(
-    x = "Parent Interpersonal Suppression",
-    y = "Adolescent Interpersonal Suppression",
+    x = "Parent Suppression",
+    y = "Adolescent Suppression",
     title = "Suppression"
   ) +
   scale_x_continuous(expand = c(0.01, 0)) +
@@ -711,11 +940,11 @@ c <- ggplot(df, aes(x = par_inter_suppression_avg, y = ad_inter_suppression_avg)
   viz1theme()
 
 library(patchwork)
-rq1plot <- (a + b + c) + plot_annotation(title = 'Parent-Adolescent Interpersonal ER Strategy Use Correspondence', theme = theme(plot.title = element_text(size = 16, family = "Avenir", hjust = 0.5)))
+rq1plot <- (a + b + c) + plot_annotation(title = "Parents' and Adolescents use of Corumination, Distraction, and \nSuppression was Positively Associated", theme = theme(plot.title = element_text(size = 20, family = "Avenir", hjust = 0.5)))
 print(rq1plot)
 ```
 
-## RQ3
+## RQ3: Parent Modeling
 
 ```{r}
 rq3plot <- ggplot(df, aes(x = par_inter_corumination_avg, y = ad_intra_rumination_avg)) +
@@ -724,7 +953,7 @@ rq3plot <- ggplot(df, aes(x = par_inter_corumination_avg, y = ad_intra_ruminatio
   labs(
     x = "Parent Interpersonal Corumination",
     y = "Adolescent Intrapersonal Rumination",
-   title = "Association between Parents' Use of Corumination \nand Adolescents' Use of Intrapersonal Rumination"
+   title = "Parents' Use of Corumination Significantly Predicted Adolescents' \nUse of Intrapersonal Rumination"
   ) +
   scale_x_continuous(expand = c(0.01, 0)) +
   scale_y_continuous(expand = c(0.01, 0)) +
@@ -736,6 +965,8 @@ print(rq3plot)
 :::
 
 # The Journey
+
+This page serves as documentation for the process of refining my visualizations. 
 
 ::: {.panel-tabset}
 
@@ -775,6 +1006,7 @@ ggplot(df1, aes(1, label, fill = beta)) +
 ## Ridgeline Plots
 
 To refine the ridgeline distribution visualizations, I changed the "alpha" and "scale" values to best display the data. Here is an early version as an example.
+
 ```{r}
 df %>%
   pivot_longer(
